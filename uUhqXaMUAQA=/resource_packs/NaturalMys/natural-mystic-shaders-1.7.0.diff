@@ -1,0 +1,2254 @@
+This file contains all the differences from vanilla to Natural Mystic Shaders
+1.7.0.
+
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/materials/common.json src/materials/common.json
+--- orig/materials/common.json	2019-01-07 21:31:26.000000000 +0900
++++ src/materials/common.json	2019-01-07 21:35:13.000000000 +0900
+@@ -1,7 +1,6 @@
+ [
+ 	{"path":"materials/particles.material"},
+ 	{"path":"materials/shadows.material"},
+-	{"path":"materials/sky.material"},
+ 	{"path":"materials/ui.material"},
+ 	{"path":"materials/ui3D.material"},
+ 	{"path":"materials/portal.material"},
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/materials/entity.material src/materials/entity.material
+--- orig/materials/entity.material	2019-02-03 11:55:56.000000000 +0900
++++ src/materials/entity.material	2019-02-06 09:39:18.000000000 +0900
+@@ -634,7 +634,7 @@
+       "vrGeometryShader": "shaders/renderchunk.geometry",
+       "fragmentShader": "shaders/renderchunk.fragment",
+ 
+-      "+defines": [ "LOW_PRECISION", "TEXEL_AA", "ATLAS_TEXTURE", "AS_ENTITY_RENDERER" ],
++      "+defines": [ "LOW_PRECISION", "TEXEL_AA", "ATLAS_TEXTURE", "AS_ENTITY_RENDERER", "MCPE40059" ],
+ 
+       "+samplerStates": [
+         {
+@@ -879,6 +879,7 @@
+     "silverfish:entity": {},
+     "silverfish_layers:entity_alphatest": {},
+     "skeleton:entity_alphatest": {},
++    "pillager:entity_alphatest": {},
+     "slime:entity_alphatest": {},
+     "slime_outer:entity": {
+       "+states": [ "Blending" ]
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/materials/fancy.json src/materials/fancy.json
+--- orig/materials/fancy.json	2019-01-07 21:00:28.000000000 +0900
++++ src/materials/fancy.json	2019-01-07 22:06:03.000000000 +0900
+@@ -1,6 +1,7 @@
+ [
+ 	{"path":"materials/fancy.material", "+defines":["FANCY"]},
+ 	{"path":"materials/entity.material", "+defines":["FANCY"]},
++	{"path":"materials/sky.material", "+defines":["FANCY"]},
+ 	{"path":"materials/terrain.material", "+defines":["FANCY"]},
+ 	{"path":"materials/hologram.material"},
+ 	{"path":"materials/portal.material", "+defines":["FANCY"]},
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/materials/fancy.material src/materials/fancy.material
+--- orig/materials/fancy.material	2019-01-07 21:10:10.000000000 +0900
++++ src/materials/fancy.material	2019-01-07 23:30:09.000000000 +0900
+@@ -7,7 +7,7 @@
+ 
+       "vertexShader": "shaders/cloud.vertex",
+       "vrGeometryShader": "shaders/cloud.geometry",
+-      "fragmentShader": "shaders/color.fragment",
++      "fragmentShader": "shaders/cloud.fragment",
+       "vertexFields": [
+         { "field": "Position" },
+         { "field": "Color" },
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/materials/particles.material src/materials/particles.material
+--- orig/materials/particles.material	2019-01-27 21:22:10.000000000 +0900
++++ src/materials/particles.material	2019-02-06 09:40:02.000000000 +0900
+@@ -3,9 +3,9 @@
+     "version": "1.0.0",
+ 
+     "particles_base": {
+-      "vertexShader": "shaders/color_uv.vertex",
++      "vertexShader": "shaders/particles.vertex",
+       "vrGeometryShader": "shaders/color_uv.geometry",
+-      "fragmentShader": "shaders/color_texture.fragment",
++      "fragmentShader": "shaders/particles.fragment",
+ 
+       "vertexFields": [
+         { "field": "Position" },
+@@ -48,6 +48,31 @@
+ 
+       "+defines": [ "EFFECTS_OFFSET" ],
+       "msaaSupport": "Both"
++    },
++
++    "particles_random_test": {
++      "vertexShader": "shaders/particle_random_test.vertex",
++      "vrGeometryShader": "shaders/color_uv.geometry",
++      "fragmentShader": "shaders/color_texture.fragment",
++
++      "vertexFields": [
++        { "field": "Position" },
++        { "field": "Color" },
++        { "field": "Normal" },
++        { "field": "UV0" }
++      ],
++
++      "+samplerStates": [
++        {
++          "samplerIndex": 0,
++          "textureFilter": "Point"
++        }
++      ],
++
++      "+defines": [ "ALPHA_TEST", "ENABLE_FOG" ],
++      "+states": [ "DisableAlphaWrite" ],
++
++      "msaaSupport": "Both"
+     }
+   }
+ }
+\ No newline at end of file
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/materials/sad.json src/materials/sad.json
+--- orig/materials/sad.json	2019-01-07 21:34:35.000000000 +0900
++++ src/materials/sad.json	2019-01-07 21:35:22.000000000 +0900
+@@ -1,6 +1,7 @@
+ [
+ 	{"path":"materials/sad.material"},
+ 	{"path":"materials/entity.material"},
++	{"path":"materials/sky.material"},
+ 	{"path":"materials/terrain.material"},
+ 	{"path":"materials/portal.material"},
+ 	{"path":"materials/barrier.material"}
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/materials/sad.material src/materials/sad.material
+--- orig/materials/sad.material	2019-01-07 21:09:54.000000000 +0900
++++ src/materials/sad.material	2019-01-07 21:11:53.000000000 +0900
+@@ -6,7 +6,7 @@
+       "+states": [ "DisableAlphaWrite" ],
+       "vertexShader": "shaders/cloud.vertex",
+       "vrGeometryShader": "shaders/cloud.geometry",
+-      "fragmentShader": "shaders/color.fragment",
++      "fragmentShader": "shaders/cloud.fragment",
+       "vertexFields": [
+         { "field": "Position" },
+         { "field": "Color" },
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/materials/sky.material src/materials/sky.material
+--- orig/materials/sky.material	2018-12-24 15:31:21.000000000 +0900
++++ src/materials/sky.material	2019-01-27 21:22:12.000000000 +0900
+@@ -52,7 +52,7 @@
+     "blendSrc": "OneMinusDestColor",
+     "blendDst": "One",
+ 
+-		"vertexShader" : "shaders/color.vertex",
++		"vertexShader" : "shaders/stars.vertex",
+ 		"vrGeometryShader" :  "shaders/color.geometry",
+ 		"fragmentShader" : "shaders/stars.fragment",
+     "vertexFields": [
+@@ -116,7 +116,7 @@
+ 
+ 		"vertexShader" : "shaders/sky.vertex",
+ 		"vrGeometryShader" : "shaders/sky.geometry",
+-		"fragmentShader" : "shaders/color.fragment",
++		"fragmentShader" : "shaders/sky.fragment",
+     "vertexFields": [
+       { "field": "Position" },
+       { "field": "Color" }
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/materials/terrain.material src/materials/terrain.material
+--- orig/materials/terrain.material	2019-01-07 20:40:51.000000000 +0900
++++ src/materials/terrain.material	2019-01-10 09:03:24.000000000 +0900
+@@ -7,7 +7,7 @@
+       "vrGeometryShader": "shaders/renderchunk.geometry",
+       "fragmentShader": "shaders/renderchunk.fragment",
+ 
+-      "+defines": [ "LOW_PRECISION", "TEXEL_AA", "ATLAS_TEXTURE" ],
++      "+defines": [ "LOW_PRECISION", "TEXEL_AA", "ATLAS_TEXTURE", "MCPE40059" ],
+       "+states": [ "DisableAlphaWrite" ],
+ 
+       "+samplerStates": [
+@@ -41,7 +41,7 @@
+         { "fog": { "+defines": [ "FOG" ] } },
+         { "lit": { "+defines": [ "ALWAYS_LIT" ] } },
+         { "underwater": { "+defines": [ "FOG" ] } },
+-        { "fog.underwater": {} },
++        { "fog.underwater": { "+defines": [ "UNDERWATER" ] } },
+         { "fading": { "+defines": [ "FOG", "ALLOW_FADE" ] } }
+       ]
+     },
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/cloud.fragment src/shaders/glsl/cloud.fragment
+--- orig/shaders/glsl/cloud.fragment	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/cloud.fragment	2019-01-07 22:01:30.000000000 +0900
+@@ -0,0 +1,23 @@
++// __multiversion__
++// This signals the loading code to prepend either #version 100 or #version 300 es as apropriate.
++
++#include "fragmentVersionSimple.h"
++#include "natural-mystic-config.h"
++
++varying vec4 color;
++
++void main()
++{
++#if defined(ENABLE_FBM_CLOUDS)
++    /* We completely disable the vanilla clouds. It's impossible to
++     * improve it. Instead we render clouds with sky shaders. */
++    discard;
++#else
++    gl_FragColor = color;
++#endif /* ENABLE_FBM_CLOUDS */
++}
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: nil
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/cloud.vertex src/shaders/glsl/cloud.vertex
+--- orig/shaders/glsl/cloud.vertex	2018-12-24 15:00:03.000000000 +0900
++++ src/shaders/glsl/cloud.vertex	2019-01-07 21:25:39.000000000 +0900
+@@ -6,6 +6,7 @@
+ #include "uniformWorldConstants.h"
+ #include "uniformPerFrameConstants.h"
+ #include "uniformShaderConstants.h"
++#include "natural-mystic-config.h"
+ 
+ attribute mediump vec4 POSITION;
+ attribute vec4 COLOR;
+@@ -23,10 +24,21 @@
+ 	POS4 worldPos = WORLD * POSITION;
+  	gl_Position = pos;
+ 
++#if defined(ENABLE_FBM_CLOUDS)
++	/* We completely disable the vanilla clouds. It's impossible to
++	 * improve it. Instead we render clouds with sky shaders. */
++	color = vec4(0.0);
++#else
+  	color = COLOR * CURRENT_COLOR;
+ 
+  	float depth = length(worldPos.xyz) / RENDER_DISTANCE;
+  	float fog = max(depth - fogNear, 0.0);
+ 
+  	color.a *= 1.0 - fog;
++#endif
+ }
+\ No newline at end of file
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: t
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/natural-mystic-cloud.h src/shaders/glsl/natural-mystic-cloud.h
+--- orig/shaders/glsl/natural-mystic-cloud.h	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/natural-mystic-cloud.h	2019-01-27 21:22:10.000000000 +0900
+@@ -0,0 +1,26 @@
++// -*- glsl -*-
++#if !defined(NATURAL_MYSTIC_CLOUD_H_INCLUDED)
++#define NATURAL_MYSTIC_CLOUD_H_INCLUDED 1
++
++#include "natural-mystic-noise.h"
++
++/* Generate a pattern of clouds based on a world position. */
++highp float cloudMap(int octaves, float lowerBound, float upperBound, highp float time, highp vec3 pos) {
++    /* Use of highp is essential here, as the uniform TIME in mediump
++     * starts to lose precision within 10 minutes.
++     */
++    const highp vec2 resolution = vec2(1.4, 1.4);
++
++    highp vec2 st = pos.xz / resolution;
++    /* The inverse of the speed (512) should be a power of two in
++     * order to avoid a precision loss.
++     */
++    st.y += time / 512.0;
++
++    /* We intentionally throw away some
++     * of the precision so we get somewhat sparse noise.
++     */
++    return fBM(octaves, lowerBound, upperBound, st * 3.0);
++}
++
++#endif /* !defined(NATURAL_MYSTIC_CLOUD_H_INCLUDED) */
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/natural-mystic-color.h src/shaders/glsl/natural-mystic-color.h
+--- orig/shaders/glsl/natural-mystic-color.h	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/natural-mystic-color.h	2019-02-20 13:44:14.000000000 +0900
+@@ -0,0 +1,121 @@
++// -*- glsl -*-
++#if !defined(NATURAL_MYSTIC_COLOR_H_INCLUDED)
++#define NATURAL_MYSTIC_COLOR_H_INCLUDED 1
++
++/* Calculate the luma of a color in the linear RGB color space. */
++float rgb2luma(vec3 color) {
++    return dot(color, vec3(0.22, 0.707, 0.071));
++}
++
++/* Desaturate a color in the linear RGB color space. The parameter
++ * "degree" should be in [0,1] where 0 being no desaturation and 1
++ * being full desaturation (completely gray). Note that the result of
++ * the function is usually to be multiplied by the color of the
++ * ambient light, or otherwise a violation of the law of conservation
++ * of energy will happen (#30).
++ */
++vec3 desaturate(vec3 baseColor, float degree) {
++    float luma = rgb2luma(baseColor);
++    return mix(baseColor, vec3(luma), degree);
++}
++
++/* Convert linear RGB to HSV. The x component of the result will be
++ * the hue [0, 1], y will be the saturation, and z will be the
++ * value. See http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
++ */
++vec3 rgb2hsv(vec3 c) {
++    const vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
++    vec4 p = c.g < c.b ? vec4(c.bg, K.wz) : vec4(c.gb, K.xy);
++    vec4 q = c.r < p.x ? vec4(p.xyw, c.r) : vec4(c.r, p.yzx);
++
++    float d = q.x - min(q.w, q.y);
++    const float e = 1.0e-10;
++    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
++}
++
++/* Convert HSV to linear RGB. See
++ * http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
++ */
++vec3 hsv2rgb(vec3 c) {
++    const vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
++    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
++    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
++}
++
++/* Calculate the color of the ambient light based on some color,
++ * usually the fog color, by normalizing the RGB components so at
++ * least one component becomes 1.0.
++ */
++vec3 brighten(vec3 color) {
++    float rgbMax = max(color.r, max(color.g, color.b));
++    float delta  = 1.0 - rgbMax;
++    return color + delta;
++}
++
++/* Apply Uncharted 2 tone mapping to the original fragment "frag".
++ * See: http://filmicworlds.com/blog/filmic-tonemapping-operators/
++ */
++vec3 uncharted2ToneMap_(vec3 x) {
++    const float A = 0.015; // Shoulder strength
++    const float B = 0.50; // Linear strength
++    const float C = 0.10; // Linear angle
++    const float D = 0.010; // Toe strength
++    const float E = 0.02; // Toe numerator
++    const float F = 0.30; // Toe denominator
++
++    return ((x * (A * x + C * B) + D * E) / (x * (A * x + B) + D * F)) - E / F;
++}
++vec3 uncharted2ToneMap(vec3 frag, float whiteLevel, float exposureBias) {
++    vec3 curr = uncharted2ToneMap_(exposureBias * frag);
++    vec3 whiteScale = 1.0 / uncharted2ToneMap_(vec3(whiteLevel));
++    vec3 color = curr * whiteScale;
++
++    return clamp(color, 0.0, 1.0);
++}
++
++/* Apply ACES filmic tone mapping to the original fragment "x". See:
++ * https://knarkowicz.wordpress.com/2016/01/06/aces-filmic-tone-mapping-curve/
++ * [Currently unused]
++ */
++vec3 acesFilmicToneMap(vec3 x) {
++    const float a = 2.51;
++    const float b = 0.03;
++    const float c = 2.43;
++    const float d = 0.59;
++    const float e = 0.14;
++
++    return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
++}
++
++/* Apply a contrast filter on some LDR linear RGB color. The contrast
++ * must be in [0, 2]. Note that this function modifies both the
++ * saturation and the luminance, which means if you are to decrease
++ * the contrast you should multiply the result with the color of the
++ * ambient light, or otherwise you'll get gray when it's
++ * inappropriate.
++ */
++vec3 contrastFilter(vec3 color, float contrast) {
++    float t = 0.5 - contrast * 0.5;
++    return clamp(color * contrast + t, 0.0, 1.0);
++}
++
++/* Apply a contrast filter on some LDR luminance. The contrast must be
++ * in [0, 2].
++ */
++float contrastFilter(float lum, float contrast) {
++    float t = 0.5 - contrast * 0.5;
++    return clamp(lum * contrast + t, 0.0, 1.0);
++}
++
++/* Apply an HDR exposure filter to the original LDR fragment
++ * "frag". The resulting image will be HDR, and need to be tone-mapped
++ * back to LDR at the last stage. [Currently unused] */
++vec3 hdrExposure(vec3 frag, float overExposure, float underExposure) {
++    vec3 overExposed   = frag / overExposure;
++    vec3 normalExposed = frag;
++    vec3 underExposed = frag * underExposure;
++
++    return mix(overExposed, underExposed, normalExposed);
++}
++
++#endif /* NATURAL_MYSTIC_COLOR_H_INCLUDED */
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/natural-mystic-fog.h src/shaders/glsl/natural-mystic-fog.h
+--- orig/shaders/glsl/natural-mystic-fog.h	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/natural-mystic-fog.h	2019-02-19 08:10:43.000000000 +0900
+@@ -0,0 +1,70 @@
++// -*- glsl -*-
++#if !defined(NATURAL_MYSTIC_FOG_H_INCLUDED)
++#define NATURAL_MYSTIC_FOG_H_INCLUDED 1
++
++/* Compute the density [0, 1] of linear fog based on a near/far
++ * control and a camera distance. It is the same as what vanilla does,
++ * and is the most cheap one. */
++float linearFog(vec2 control, float dist) {
++    float density = (dist - control.x) / (control.y - control.x);
++    return clamp(density, 0.0, 1.0);
++}
++
++float exponentialFog(vec2 control, float dist) {
++    /* Determine the base density so the final result will be maxed
++     * out to 1 at the fog far, i.e. the y component of the fog
++     * control.
++     *
++     *   1 / e^(far * base) <= r (for some very small positive r),
++     *   r * e^(far * base) >= 1,
++     *   e^(far * base) >= 1/r,
++     *   far * base >= log 1/r, therefore
++     *   base >= (log 1/r) / far
++     */
++    float base = log(1.0/0.03) / (control.y - control.x);
++    dist = max(0.0, dist - control.x);
++
++    float fogFactor = 1.0 / exp(dist * base);
++    fogFactor = clamp(fogFactor, 0.0, 1.0);
++
++    return 1.0 - fogFactor;
++}
++
++/* Compute the density [0, 1] of exponential squared fog based on a
++ * near/far control and a camera distance. This function produces
++ * better fogs than those of vanilla (#12). See:
++ * http://in2gpu.com/2014/07/22/create-fog-shader/
++ */
++float exponentialSquaredFog(vec2 control, float dist) {
++    /* Determine the base density so the final result will be maxed
++     * out to 1 at the fog far, i.e. the y component of the fog
++     * control.
++     *
++     *   1 / e^((far * base)^2) <= r (for some very small positive r),
++     *   r * e^((far * base)^2) >= 1,
++     *   e^((far * base)^2) >= 1/r,
++     *   (far * base)^2 >= log 1/r,
++     *   far * base >= sqrt (log 1/r), therefore
++     *   base >= (sqrt (log 1/r)) / far
++     */
++    float base = sqrt(log(1.0/0.015)) / (control.y - control.x);
++    dist = max(0.0, dist - control.x);
++
++    float fogFactor = 1.0 / exp(pow(dist * base, 2.0));
++    fogFactor = clamp(fogFactor, 0.0, 1.0);
++
++    return 1.0 - fogFactor;
++}
++
++/* Compute the brightness [0, 1] of permanent fog as opposed to the
++ * bad weather fog. Fogs can scatter any of incoming light rays
++ * regardless of their source.
++ */
++float fogBrightness(float torchLevel, float sunLevel, float daylight) {
++    const float scatter = 1.2;
++
++    float brightness = max(torchLevel, sunLevel * daylight) * scatter;
++    return clamp(brightness, 0.0, 1.0);
++}
++
++#endif /* defined(NATURAL_MYSTIC_FOG_H_INCLUDED) */
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/natural-mystic-hacks.h src/shaders/glsl/natural-mystic-hacks.h
+--- orig/shaders/glsl/natural-mystic-hacks.h	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/natural-mystic-hacks.h	2019-02-06 09:52:45.000000000 +0900
+@@ -0,0 +1,79 @@
++// -*- glsl -*-
++#if !defined(NATURAL_MYSTIC_HACKS_H_INCLUDED)
++#define NATURAL_MYSTIC_HACKS_H_INCLUDED 1
++
++#include "natural-mystic-color.h"
++
++/* Detect grasses based on the color of material. The color must be in
++ * HSV, not RGB. This function also returns true for grass blocks and
++ * leaves because it's impossible to tell them from plants.
++ */
++bool isGrass(vec3 hsv) {
++    /* Grass colors are affected by seasons and can turn red. */
++    float hue = hsv.x * 360.0;
++    return hsv.y > 0.1 && (hue < 149.0 && hue > 12.0);
++}
++
++/* Detect water based on the color of material. The color must be in
++ * HSV, not RGB.
++ */
++bool isWater(vec3 hsv) {
++    /* Yikes. The color of water greatly changes in swampland so we
++     * need an HSV value of the color to reliably detect water.
++     */
++    float hue = hsv.x * 360.0;
++    return hsv.y > 0.1 && hue >= 149.0 && hue <= 270.0;
++}
++
++/* Detect a water plane based on the world position of a vertex. */
++bool isWaterPlane(highp vec4 wPos) {
++    highp float y = fract(wPos.y);
++    return y >= 0.7 && y <= 0.9;
++}
++
++/* Detect the Nether fog. [Currently unused] */
++bool isNetherFog(vec4 fogColor) {
++    return fogColor.r > fogColor.b && fogColor.r < 0.5 && fogColor.b < 0.05;
++}
++
++/* Detect the End fog. [Currently unused] */
++bool isTheEndFog(vec4 fogColor) {
++    return fogColor.r > fogColor.g && fogColor.b > fogColor.g &&
++        lessThan(fogColor.rgb, vec3(0.05)) == bvec3(true);
++}
++
++/* Detect the render distance fog. NOTE: It is tempting to use
++ * material variants "*_far" instead of this hack (see
++ * terrain.material) but no, that's actually not possible because the
++ * fog they can have is not always the render distance fog. It can
++ * also be the bad weather fog.
++ */
++bool isRenderDistanceFog(vec2 fogControl) {
++    return fogControl.x > 0.6;
++}
++
++/* When it's raining on the Overworld, the game gradually reduces the
++ * fog far to < 1.0. We exploit this fact to detect rain. This
++ * function returns 0.0 when it's raining, and 1.0 otherwise.
++ */
++float isClearWeather(vec2 fogControl) {
++    return smoothstep(0.8, 1.0, fogControl.y);
++}
++
++/* Compute an occlusion factor [0, 1] based on the vertex color. 0.0
++ * means completely occluded, and 1.0 means not occluded at all. This
++ * works because the game appears to encode an ambient occlusion in
++ * the vertex color unless SEASONS is defined.
++ */
++float occlusionFactor(vec3 color) {
++    const float shadowBorder = 0.83;
++    const float shadowBlurLo = 0.05;
++    const float shadowBlurHi = 0.01;
++
++    /* Hackish adjustment for grass blocks! */
++    float luminance = color.g * 2.0 - (color.r < color.b ? color.r : color.b);
++
++    return smoothstep(shadowBorder - shadowBlurLo, shadowBorder + shadowBlurHi, luminance);
++}
++
++#endif /* NATURAL_MYSTIC_HACKS_H_INCLUDED */
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/natural-mystic-light.h src/shaders/glsl/natural-mystic-light.h
+--- orig/shaders/glsl/natural-mystic-light.h	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/natural-mystic-light.h	2019-02-01 00:32:03.000000000 +0900
+@@ -0,0 +1,214 @@
++// -*- glsl -*-
++#if !defined(NATURAL_MYSTIC_LIGHT_H_INCLUDED)
++#define NATURAL_MYSTIC_LIGHT_H_INCLUDED 1
++
++#include "natural-mystic-color.h"
++#include "natural-mystic-noise.h"
++
++/* Light color constants. Should be private to this file.
++ */
++const vec3 torchlightColor = vec3(1.0, 0.66, 0.28);
++const vec3 skylightColor   = vec3(0.8392, 0.9098, 0.9961);
++const vec3 moonlightColor  = vec3(112.0, 135.5, 255.0)/255.0;
++
++/* Calculate the color of sunlight based on the time-dependent
++ * daylight level "daylight" [0, 1]. The color of sunlight changes
++ * depending on the daylight level to express dusk and dawn.
++ */
++vec3 sunlightColor(float daylight) {
++    const vec3 setColor = vec3(1.0, 0.3569, 0.0196);
++    const vec3 dayColor = vec3(1.0, 0.8706, 0.8039);
++
++    return mix(setColor, dayColor, smoothstep(0.45, 1.0, daylight));
++}
++
++/* Calculate the color of the ambient light based solely on the fog
++ * color.
++ */
++vec3 ambientLightColor(vec4 fogColor) {
++    return brighten(fogColor.rgb);
++}
++
++/* Calculate the color of the ambient light based on the
++ * terrain-dependent sunlight level, and the time-dependent daylight
++ * level. The level of ambient light is not dependent on the terrain
++ * but the color is.
++ */
++vec3 ambientLightColor(float sunLevel, float daylight) {
++    /* The daylight color is a mixture of sunlight and skylight. */
++    vec3 daylightColor = mix(skylightColor, sunlightColor(daylight), 0.625);
++
++    /* The influence of the sun and the moon depends on the daylight
++     * level. */
++    vec3 outsideColor = mix(moonlightColor, daylightColor, daylight);
++
++    /* In caves the torch light is the only possible light source but
++     * on the ground the sun or the moon is the most influential. */
++    return brighten(mix(torchlightColor, outsideColor, sunLevel));
++}
++
++/* Compute the ambient light to be accumulated to a fragment. Without
++ * this filter, objects getting no light will be rendered in complete
++ * darkness, which isn't how the reality works.
++ */
++vec3 ambientLight(vec3 lightColor, float intensity) {
++    return lightColor * intensity;
++}
++
++/* Calculate the torch light flickering factor [0, 2] based on the
++ * world coordinates and the in-game time.
++ */
++float torchLightFlicker(highp vec3 wPos, highp float time) {
++    /* The flicker factor is solely determined by the coords and the
++     * time. Ideally it should be separately computed for each light
++     * source in the scene, but we can't do it because shaders don't
++     * have access to such information. We instead generate a
++     * 4-dimensional simplex noise and slice it by time.
++     */
++    const highp float amplitude  = 0.40;
++    const highp vec4  resolution = vec4(vec3(12.0), 0.8);
++
++    highp vec4  st      = vec4(wPos, time) / resolution;
++    highp float flicker = simplexNoise(st);
++    return flicker * amplitude + 1.0;
++}
++
++/* Compute the torch light. The argument "torchLevel" should be the
++ * torch light level [0, 1].
++ */
++vec3 torchLight(float torchLevel, float sunLevel, float daylight, highp float flickerFactor) {
++    const float baseIntensity = 180.0;
++    const float decay         = 5.0;
++
++    if (torchLevel > 0.0) {
++        float intensity = baseIntensity * pow(torchLevel, decay) * flickerFactor;
++
++        /* Reduce the effect of the torch light on areas lit by the
++         * sunlight. Theoretically we shouldn't need to do this and
++         * instead can use much more intense light for the sun, but we
++         * haven't found a good tone mapping curve for that.
++         */
++        intensity *= mix(1.0, 0.1, smoothstep(0.65, 0.875, sunLevel * daylight));
++
++        return torchlightColor * intensity;
++    }
++    else {
++        return vec3(0);
++    }
++}
++
++/* Compute the emissive light for light source objects.
++ */
++vec3 emissiveLight(highp float flickerFactor) {
++    /* The game doesn't tell us what kind of light source it is, so we
++     * assume it's a torch. */
++    const vec3  lightColor = torchlightColor;
++    const float intensity  = 60.0;
++
++    return lightColor * intensity * flickerFactor;
++}
++
++/* Compute the sunlight based on the terrain-dependent sunlight level
++ * [0,1] and the time-dependent daylight level "daylight" [0,1]. The
++ * sunlight is yellow-ish red. The sunlight comes from the sun which
++ * behaves like a directional light.
++ */
++vec3 sunlight(float sunLevel, float daylight) {
++    const float baseIntensity = 50.0;
++    const float shadowFactor  = 0.01;  // [0, 1]
++    const float shadowBorder  = 0.87;  // [0, 1]
++    const float shadowBlur    = 0.003; // The higher the more blur.
++
++    float intensity = baseIntensity * sunLevel * daylight;
++    if (intensity > 0.0) {
++        /* Shadows reduce the amount of sunlight. The reason why we
++         * don't remove it entirely is that a shadowed area near a lit
++         * area will receive higher amount of scattered light. If it
++         * were completely occluded the sunlight level won't be
++         * non-zero. */
++        intensity *= mix(
++            shadowFactor, 1.0,
++            smoothstep(shadowBorder - shadowBlur, shadowBorder + shadowBlur, sunLevel));
++
++        return sunlightColor(daylight) * intensity;
++    }
++    else {
++        return vec3(0);
++    }
++}
++
++/* Compute the skylight based on the terrain-dependent sunlight level
++ * [0,1] and the time-dependent daylight level "daylight" [0,1]. The
++ * skylight is blue-ish white. The skylight comes from the sky which
++ * behaves like an ambient light but is affected by occlusion.
++ */
++vec3 skylight(float sunLevel, float daylight) {
++    const float baseIntensity = 30.0;
++
++    float intensity = baseIntensity * sunLevel * daylight;
++    if (intensity > 0.0) {
++        return skylightColor * intensity;
++    }
++    else {
++        return vec3(0);
++    }
++}
++
++/* Compute the moonlight based on the time-dependent daylight level
++ * [0, 1] and the terrain-dependent sunlight level [0, 1]. The
++ * moonlight behaves like sunlight but is blue-ish white.
++ */
++vec3 moonlight(float sunLevel, float daylight) {
++    const float baseIntensity = 10.0;
++    const float shadowFactor  = 0.20;  // [0, 1]
++    const float shadowBorder  = 0.87;  // [0, 1]
++    const float shadowBlur    = 0.003; // The higher the more blur.
++
++    float intensity = baseIntensity * sunLevel * (1.0 - daylight);
++    if (intensity > 0.0) {
++        /* Shadows reduce the amount of moonlight. */
++        intensity *= mix(
++            shadowFactor, 1.0,
++            smoothstep(shadowBorder - shadowBlur, shadowBorder + shadowBlur, sunLevel));
++
++        return moonlightColor * intensity;
++    }
++    else {
++        return vec3(0);
++    }
++}
++
++/* Compute the specular light based on the surface normal and view
++ * position.
++ */
++vec3 specularLight(
++    float fresnel, float shininess, vec3 incomingDirLight, vec3 incomingUndirLight,
++    highp vec3 worldPos, highp vec3 viewPos, highp vec3 normal) {
++
++    vec3 incomingLight = incomingDirLight + incomingUndirLight;
++    vec3 dirLightRatio = incomingDirLight / (incomingLight + vec3(0.001));
++
++    /* The game doesn't tell us where the sun or the moon is, which is
++     * so unfortunate. We have to assume they are always at some fixed
++     * point. */
++    const highp vec3 lightDir = normalize(vec3(-2.5, 5.5, 1.0));
++
++    /* The intensity of the specular light is determined with the
++     * angle between the Blinn-Phong half vector and the normal. See
++     * https://seblagarde.wordpress.com/2011/08/17/hello-world/
++     */
++    highp vec3  viewDir   = -normalize(worldPos - viewPos);
++    highp vec3  halfDir   = normalize(viewDir + lightDir);
++    highp float incident  = max(0.0, dot(lightDir, halfDir));
++    highp float reflAngle = max(0.0, dot(halfDir, normal));
++    highp float dotNL     = max(0.0, dot(normal, lightDir));
++    highp float reflCoeff = fresnel + (1.0 - fresnel) * pow(1.0 - incident, 5.0);
++    highp vec3  specular  = incomingLight * 2.0 * pow(reflAngle, shininess) * reflCoeff * dotNL;
++
++    highp float viewAngle = max(0.0, dot(normal, viewDir));
++    highp float viewCoeff = fresnel + (1.0 - fresnel) * pow(1.0 - viewAngle, 5.0);
++    return specular * dirLightRatio +     // Reflected directional light
++        viewCoeff * incomingLight * 0.03; // Reflected undirectional light
++}
++
++#endif
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/natural-mystic-noise.h src/shaders/glsl/natural-mystic-noise.h
+--- orig/shaders/glsl/natural-mystic-noise.h	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/natural-mystic-noise.h	2019-01-27 21:22:10.000000000 +0900
+@@ -0,0 +1,315 @@
++// -*- glsl -*-
++#if !defined(NATURAL_MYSTIC_NOISE_H_INCLUDED)
++#define NATURAL_MYSTIC_NOISE_H_INCLUDED 1
++
++// See also: https://www.shadertoy.com/view/4djSRW
++// Also https://briansharpe.wordpress.com/2011/10/01/gpu-texture-free-noise/
++// Also https://github.com/stegu/webgl-noise/
++// Also https://forum.unity.com/threads/2d-3d-4d-optimised-perlin-noise-cg-hlsl-library-cginc.218372/
++// Also https://gist.github.com/fadookie/25adf86ae7e2753d717c
++
++/* Permutation in mod 289. */
++#define NOISE_SIMPLEX_1_DIV_289 0.00346020761245674740484429065744
++
++highp float mod289(highp float x) {
++    return x - floor(x * NOISE_SIMPLEX_1_DIV_289) * 289.0;
++}
++
++highp vec2 mod289(highp vec2 x) {
++    return x - floor(x * NOISE_SIMPLEX_1_DIV_289) * 289.0;
++}
++
++highp vec3 mod289(highp vec3 x) {
++    return x - floor(x * NOISE_SIMPLEX_1_DIV_289) * 289.0;
++}
++
++highp vec4 mod289(highp vec4 x) {
++    return x - floor(x * NOISE_SIMPLEX_1_DIV_289) * 289.0;
++}
++
++highp float permute289(highp float x) {
++    return mod289((x * 34.0 + 1.0) * x);
++}
++
++highp vec3 permute289(highp vec3 x) {
++    return mod289((x * 34.0 + 1.0) * x);
++}
++
++highp vec4 permute289(highp vec4 x) {
++    return mod289((x * 34.0 + 1.0) * x);
++}
++
++/* A 4D gradient function, used for generating noise. */
++highp vec4 grad4(highp float j, highp vec4 ip) {
++    const vec4 ones = vec4(1.0, 1.0, 1.0, -1.0);
++    vec4 p, s;
++
++    p.xyz  = floor(fract(j * ip.xyz) * 7.0) * ip.z - 1.0;
++    p.w    = 1.5 - dot(abs(p.xyz), ones.xyz);
++    p.xyz -= sign(p.xyz) * (p.w < 0.0 ? 1.0 : 0.0);
++
++    return p;
++}
++
++/* 2D simplex noise [-1, 1], based on https://github.com/stegu/webgl-noise/
++ */
++highp float simplexNoise(highp vec2 v) {
++    const highp vec4 C = vec4(
++        0.211324865405187,   // (3.0-sqrt(3.0))/6.0
++        0.366025403784439,   // 0.5*(sqrt(3.0)-1.0)
++        -0.577350269189626,  // -1.0 + 2.0 * C.x
++        0.024390243902439);  // 1.0 / 41.0
++
++    // First corner
++    highp vec2 i  = floor(v + dot(v, C.yy));
++    highp vec2 x0 = v -   i + dot(i, C.xx);
++
++    // Other corners
++    highp vec2 i1  = x0.x > x0.y ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
++    highp vec4 x12 = x0.xyxy + C.xxzz;
++    x12.xy -= i1;
++
++    // Permutations
++    i = mod289(i); // Avoid truncation effects in permutation
++    highp vec3 p =
++        permute289(
++            permute289(
++                i.y + vec3(0.0, i1.y, 1.0)
++                ) + i.x + vec3(0.0, i1.x, 1.0)
++            );
++
++    highp vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
++    m = m*m;
++    m = m*m;
++
++    // Gradients: 41 points uniformly over a line, mapped onto a
++    // diamond.  The ring size 17*17 = 289 is close to a multiple of
++    // 41 (41*7 = 287)
++    highp vec3 x  = 2.0 * fract(p * C.www) - 1.0;
++    highp vec3 h  = abs(x) - 0.5;
++    highp vec3 ox = round(x);
++    highp vec3 a0 = x - ox;
++
++    // Normalise gradients implicitly by scaling m
++    m *= inversesqrt(a0 * a0 + h * h);
++
++    // Compute final noise value at P
++    highp vec3 g;
++    g.x  = a0.x  * x0.x   + h.x  * x0.y;
++    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
++    return 130.0 * dot(m, g);
++}
++
++/* 3D simplex noise [-1, 1], based on https://github.com/stegu/webgl-noise/
++ */
++highp float simplexNoise(highp vec3 v) {
++    const highp vec2 C = vec2(
++        0.166666666666666667,  // 1/6
++        0.333333333333333333); // 1/3
++    const highp vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
++
++    // First corner
++    highp vec3 i  = floor(v + dot(v, C.yyy));
++    highp vec3 x0 = v -   i + dot(i, C.xxx);
++
++    // Other corners
++    highp vec3 g  = step(x0.yzx, x0.xyz);
++    highp vec3 l  = 1.0 - g;
++    highp vec3 i1 = min(g.xyz, l.zxy);
++    highp vec3 i2 = max(g.xyz, l.zxy);
++
++    //         x0 = x0 - 0.0 + 0.0 * C.xxx;
++    //         x1 = x0 - i1  + 1.0 * C.xxx;
++    //         x2 = x0 - i2  + 2.0 * C.xxx;
++    //         x3 = x0 - 1.0 + 3.0 * C.xxx;
++    highp vec3 x1 = x0 - i1 + C.xxx;
++    highp vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y
++    highp vec3 x3 = x0 - D.yyy; // -1.0+3.0*C.x = -0.5 = -D.y
++
++    // Permutations
++    i = mod289(i);
++    highp vec4 p =
++        permute289(
++            permute289(
++                permute289(
++                    i.z + vec4(0.0, i1.z, i2.z, 1.0)
++                    ) + i.y + vec4(0.0, i1.y, i2.y, 1.0)
++                ) + i.x + vec4(0.0, i1.x, i2.x, 1.0)
++            );
++
++    // Gradients: 7x7 points over a square, mapped onto an octahedron.
++    // The ring size 17*17 = 289 is close to a multiple of 49 (49*6 =
++    // 294)
++    const highp float n_ = 0.142857142857; // 1.0/7.0
++    highp vec3  ns = n_ * D.wyz - D.xzx;
++
++    highp vec4 j = p - 49.0 * floor(p * ns.z * ns.z);  //  mod(p, 7*7)
++
++    highp vec4 x_ = floor(j * ns.z);
++    highp vec4 y_ = floor(j - 7.0 * x_);    // mod(j, N)
++
++    highp vec4 x = x_ * ns.x + ns.yyyy;
++    highp vec4 y = y_ * ns.x + ns.yyyy;
++    highp vec4 h = 1.0 - abs(x) - abs(y);
++
++    highp vec4 b0 = vec4(x.xy, y.xy);
++    highp vec4 b1 = vec4(x.zw, y.zw);
++
++    highp vec4 s0 = floor(b0) * 2.0 + 1.0;
++    highp vec4 s1 = floor(b1) * 2.0 + 1.0;
++    highp vec4 sh = -step(h, vec4(0.0));
++
++    highp vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;
++    highp vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;
++
++    highp vec3 p0 = vec3(a0.xy, h.x);
++    highp vec3 p1 = vec3(a0.zw, h.y);
++    highp vec3 p2 = vec3(a1.xy, h.z);
++    highp vec3 p3 = vec3(a1.zw, h.w);
++
++    // Normalise gradients
++    highp vec4 norm = inversesqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
++    p0 *= norm.x;
++    p1 *= norm.y;
++    p2 *= norm.z;
++    p3 *= norm.w;
++
++    // Mix final noise value
++    highp vec4 m = max(0.5 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);
++    m = m * m;
++    return 42.0 *
++        dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
++}
++
++/* 4D simplex noise [-1, 1], based on https://github.com/stegu/webgl-noise/
++ */
++highp float simplexNoise(highp vec4 v) {
++    const highp vec4 C = vec4(
++        0.138196601125011,    // (5 - sqrt(5))/20 = G4
++        0.276393202250021,    // 2 * G4
++        0.414589803375032,    // 3 * G4
++        -0.447213595499958);  // -1 + 4 * G4
++    const highp float F4 = 0.309016994374947451; // (sqrt(5) - 1) / 4
++
++    // First corner
++    highp vec4 i  = floor(v + dot(v, vec4(F4)));
++    highp vec4 x0 = v -   i + dot(i, C.xxxx);
++
++    // Other corners
++
++    // Rank sorting originally contributed by Bill Licea-Kane, AMD
++    // (formerly ATI)
++    highp vec4 i0;
++    highp vec3 isX  = step(x0.yzw, x0.xxx);
++    highp vec3 isYZ = step(x0.zww, x0.yyz);
++    i0.x    = dot(isX, vec3(1.0));
++    i0.yzw  = 1.0 - isX;
++    i0.y   += dot(isYZ.xy, vec2(1.0));
++    i0.zw  += 1.0 - isYZ.xy;
++    i0.z   += isYZ.z;
++    i0.w   += 1.0 - isYZ.z;
++
++    // i0 now contains the unique values 0, 1, 2, 3 in each channel
++    highp vec4 i3 = clamp(i0      , 0.0, 1.0);
++    highp vec4 i2 = clamp(i0 - 1.0, 0.0, 1.0);
++    highp vec4 i1 = clamp(i0 - 2.0, 0.0, 1.0);
++
++    //         x0 = x0 - 0.0 + 0.0 * C.xxxx
++    //         x1 = x0 - i1  + 1.0 * C.xxxx
++    //         x2 = x0 - i2  + 2.0 * C.xxxx
++    //         x3 = x0 - i3  + 3.0 * C.xxxx
++    //         x4 = x0 - 1.0 + 4.0 * C.xxxx
++    highp vec4 x1 = x0 - i1  + C.xxxx;
++    highp vec4 x2 = x0 - i2  + C.yyyy;
++    highp vec4 x3 = x0 - i3  + C.zzzz;
++    highp vec4 x4 = x0       + C.wwww;
++
++    // Permutations
++    i = mod289(i);
++    highp float j0 =
++        permute289(
++            permute289(
++                permute289(
++                    permute289(i.w) + i.z
++                    ) + i.y
++                ) + i.x
++            );
++    highp vec4 j1 =
++        permute289(
++            permute289(
++                permute289(
++                    permute289(
++                        i.w + vec4(i1.w, i2.w, i3.w, 1.0)
++                        ) + i.z + vec4(i1.z, i2.z, i3.z, 1.0)
++                    ) + i.y + vec4(i1.y, i2.y, i3.y, 1.0)
++                ) + i.x + vec4(i1.x, i2.x, i3.x, 1.0)
++            );
++
++    // Gradients: 7x7x6 points over a cube, mapped onto a 4-cross
++    // polytope 7*7*6 = 294, which is close to the ring size 17*17 =
++    // 289.
++    const highp vec4 ip = vec4(
++        0.003401360544217687075, // 1/294
++        0.020408163265306122449, // 1/49
++        0.142857142857142857143, // 1/7
++        0.0);
++
++    highp vec4 p0 = grad4(j0  , ip);
++    highp vec4 p1 = grad4(j1.x, ip);
++    highp vec4 p2 = grad4(j1.y, ip);
++    highp vec4 p3 = grad4(j1.z, ip);
++    highp vec4 p4 = grad4(j1.w, ip);
++
++    // Normalise gradients
++    highp vec4 norm = inversesqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
++    p0 *= norm.x;
++    p1 *= norm.y;
++    p2 *= norm.z;
++    p3 *= norm.w;
++    p4 *= inversesqrt(dot(p4, p4));
++
++    // Mix contributions from the five corners
++    highp vec3 m0 = max(0.5 - vec3(dot(x0, x0), dot(x1, x1), dot(x2, x2)), 0.0);
++    highp vec2 m1 = max(0.5 - vec2(dot(x3, x3), dot(x4, x4)             ), 0.0);
++    m0 = m0 * m0;
++    m1 = m1 * m1;
++    return 49.0 *
++        ( dot(m0 * m0, vec3(dot(p0, x0), dot(p1, x1), dot(p2, x2))) +
++          dot(m1 * m1, vec2(dot(p3, x3), dot(p4, x4))) );
++}
++
++/* Generate a 2D fBM noise [0, 1]. See
++ * https://thebookofshaders.com/13/
++ */
++highp float fBM(const int octaves, const float lowerBound, const float upperBound, highp vec2 st) {
++    // Initial values
++    highp float value = 0.0;
++    highp float amplitude = 0.5;
++
++    // Loop of octaves
++    for (int i = 0; i < octaves; i++) {
++        value += amplitude * (simplexNoise(st) * 0.5 + 0.5);
++
++        if (value >= upperBound) {
++            /* Optimization (#29): We have already reached the upper
++             * bound so no further accumulations can affect the final
++             * result.
++             */
++            break;
++        }
++        else if (value + amplitude <= lowerBound) {
++            /* Optimization (#29): The maximum of accumulated noise
++             * converges to value + amplitude at this point (at i →
++             * ∞), which isn't going to reach the cutoff
++             * threshold. */
++            break;
++        }
++
++        st        *= 2.0;
++        amplitude *= 0.5;
++    }
++
++    return smoothstep(lowerBound, upperBound, value);
++}
++
++#endif /* NATURAL_MYSTIC_NOISE_H_INCLUDED */
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/natural-mystic-rain.h src/shaders/glsl/natural-mystic-rain.h
+--- orig/shaders/glsl/natural-mystic-rain.h	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/natural-mystic-rain.h	2019-01-27 21:22:10.000000000 +0900
+@@ -0,0 +1,55 @@
++// -*- glsl -*-
++#if !defined(NATURAL_MYSTIC_RAIN_H_INCLUDED)
++#define NATURAL_MYSTIC_RAIN_H_INCLUDED 1
++
++#include "natural-mystic-noise.h"
++
++/* See https://seblagarde.wordpress.com/2012/12/10/observe-rainy-world/
++ */
++
++/* Compute the wetness of the terrain based on the clear weather level
++ * [0,1] and terrain-dependent sunlight level [0,1].
++ */
++float wetness(float clearWeather, float sunLevel) {
++    const float shadowFactor = 0.01;  // [0, 1]
++    const float shadowBorder = 0.80;  // [0, 1]
++    const float shadowBlur   = 0.06; // The higher the more blur.
++
++    return (1.0 - clearWeather) * smoothstep(shadowBorder - shadowBlur, shadowBorder + shadowBlur, sunLevel);
++}
++
++/* Compute light reflected by water ripples on the ground.
++ */
++vec3 ripples(vec3 incomingLight, highp vec3 worldPos, highp float cameraDist, highp float time, highp vec3 normal) {
++    /* The visual effect of ripples is so subtle, and it won't be
++     * visible on far terrain. We can skip the costly noise generation
++     * unless worldPos isn't close to the camera. */
++    const float distThreshold = 0.1;
++    const float distFadeStart = distThreshold * 0.8;
++
++    if (cameraDist < distThreshold) {
++        /* Water ripples should only be apparent on the ground, i.e. where the
++         * normal matches to (0, 1, 0). */
++        float cosTheta = max(0.0, normal.y); // Equivalent to max(0.0, dot(normal, vec3(0, 1, 0)));
++
++        const highp vec3 resolution = vec3(vec2(0.16), 0.5);
++        const float amount = 0.1;
++
++        highp vec3 st = vec3(worldPos.xz, time) / resolution;
++        float ripples = simplexNoise(st);
++
++        /* Shift the range of ripples. */
++        ripples = (ripples + 0.8) * 0.5;
++
++        /* Threshold and scale of ripples. */
++        ripples = smoothstep(0.3, 1.0, ripples);
++
++        return incomingLight * mix(0.2, 1.0, cosTheta) * ripples * amount *
++            (1.0 - smoothstep(distFadeStart, distThreshold, cameraDist));
++    }
++    else {
++        return vec3(0);
++    }
++}
++
++#endif /* defined(NATURAL_MYSTIC_RAIN_H_INCLUDED) */
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/natural-mystic-water.h src/shaders/glsl/natural-mystic-water.h
+--- orig/shaders/glsl/natural-mystic-water.h	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/natural-mystic-water.h	2019-02-07 08:52:50.000000000 +0900
+@@ -0,0 +1,196 @@
++// -*- glsl -*-
++#if !defined(NATURAL_MYSTIC_WATER_H_INCLUDED)
++#define NATURAL_MYSTIC_WATER_H_INCLUDED 1
++
++/* Overview of our water system:
++ *
++ * In the vertex shader we compute geometric undulations of a base
++ * mesh map with Gerstner waves, as well as their partial derivatives
++ * to compute the surface normal. The opacity of the water is also
++ * computed in the vertex shader based on the view angle. The
++ * resulting normal is then passed to the fragment shader.
++ *
++ * In the fragment shader we generate smaller waves and sum up with
++ * the geometric normal, to get the final normal. We use the normal to
++ * compute the intensity of the specular light.
++ *
++ * See also: https://developer.nvidia.com/gpugems/GPUGems/gpugems_ch01.html
++ */
++
++/* Compute a Gerstner wave. See comments in waterWaveGeometric() for
++ * the meaning of parameters.
++ */
++highp vec3 gerstnerWave(
++    highp vec3 wPos, highp float time, inout highp vec3 normal,
++    float Q, float numWaves, float Ai, vec2 Di, float Li, float Si) {
++
++    const float wFactor = 9.80665 * 2.0 * 3.14159;
++
++    float wi    = sqrt(wFactor / Li);
++    float Qi    = Q / (wi * Ai * numWaves);
++    float phi_i = Si * 2.0 / Li;
++
++    highp float theta    = wi * dot(Di, wPos.xz) + phi_i * time;
++    highp float cosTheta = cos(theta);
++    highp float sinTheta = sin(theta);
++    wPos.xz += Di * Qi * Ai * cosTheta;
++    wPos.y  +=           Ai * sinTheta;
++
++    highp float wiAi = wi * Ai;
++    normal.xz -= wiAi * Di * cosTheta;
++    normal.y  -= wiAi * Qi * sinTheta;
++
++    return wPos;
++}
++
++/* Similar to gerstnerWave() but this only computes the normal vector.
++ */
++highp vec3 gerstnerWaveN(
++    highp vec3 wPos, highp float time, highp vec3 normal,
++    float Q, float numWaves, float Ai, vec2 Di, float Li, float Si) {
++
++    const float wFactor = 9.80665 * 2.0 * 3.14159;
++
++    float wi    = sqrt(wFactor / Li);
++    float Qi    = Q / (wi * Ai * numWaves);
++    float phi_i = Si * 2.0 / Li;
++
++    highp float theta = wi * dot(Di, wPos.xz) + phi_i * time;
++    highp float wiAi  = wi * Ai;
++    normal.xz -= wiAi * Di * cos(theta);
++    normal.y  -= wiAi * Qi * sin(theta);
++
++    return normal;
++}
++
++/* Translate an angle in degrees into a normalized direction vector,
++ * hoping drivers will optimize it out.
++ */
++vec2 deg2dir(float deg) {
++    float rad = radians(deg);
++    return vec2(cos(rad), sin(rad));
++}
++
++highp vec3 waterWaveGeometric(highp vec3 wPos, highp float time, out highp vec3 normal) {
++    /* The Gerstner wave function is:
++     *
++     *              [ x + Σ(Q_i A_i * D_i.x * cos(w_i D_i · (x, y) + φ_i t)), ]
++     * P(x, y, t) = | y + Σ(Q_i A_i * D_i.y * cos(w_i D_i · (x, y) + φ_i t)), |
++     *              [     Σ(    A_i         * sin(w_i D_i · (x, y) + φ_i t))  ]
++     *
++     * where
++     *
++     *   Q_i: The steepness of the i-th wave. Q_i = 0 means that the
++     *        wave i is plainly a sine, while Q_i = 1/(w_i A_i) gives
++     *        a sharp crest. To ease setting the parameters, we leave
++     *        the specification of Q as a steepness parameter [0, 1]
++     *        and use Q_i = Q/(w_i A_i * numWaves).
++     *
++     *   A_i: The amplitude of the i-th wave.
++     *
++     *   D_i: The horizontal vector of the i-th wave, perpendicular to
++     *        the wave front along which the crest travels.
++     *
++     *   w_i: The frequency of the i-th wave. For wavelength L_i, w_i
++     *        = sqrt(g * 2π/L_i) where g is the gravitational
++     *        constant 9.80665.
++     *
++     *   φ_i: The phase constant of the i-th wave. For speed S_i,
++     *        φ_i = S_i * 2/L_i.
++     *
++     * And the surface normal will be:
++     *
++     *              [    -Σ(D_i.x * w_i A_i * cos(w_i D_i · (x, y) + φ_i t)), ]
++     * N(x, y, t) = |    -Σ(D_i.y * w_i A_i * cos(w_i D_i · (x, y) + φ_i t)), |
++     *              [ 1 - Σ(Q_i   * w_i A_i * sin(w_i D_i · (x, y) + φ_i t))  ]
++     */
++    const float Q        = 0.45;
++    const float numWaves = float(4);
++
++    normal = vec3(0.0, 1.0, 0.0);
++    wPos   = gerstnerWave(wPos, time, normal, Q, numWaves, 0.08, deg2dir( 90.0), 16.0, 7.0);
++    wPos   = gerstnerWave(wPos, time, normal, Q, numWaves, 0.08, deg2dir(260.0), 15.0, 8.0);
++    wPos   = gerstnerWave(wPos, time, normal, Q, numWaves, 0.05, deg2dir( 70.0),  8.0, 13.0);
++    wPos   = gerstnerWave(wPos, time, normal, Q, numWaves, 0.02, deg2dir(200.0),  7.0, 14.0);
++
++    return wPos;
++}
++
++highp vec3 waterWaveNormal(highp vec3 wPos, highp float time, highp vec3 normal) {
++    const float Q        = 0.45;
++    const float numWaves = float(3);
++
++    normal = gerstnerWaveN(wPos, time, normal, Q, numWaves, 0.0058, deg2dir( 85.0), 0.75, 1.0);
++    normal = gerstnerWaveN(wPos, time, normal, Q, numWaves, 0.0058, deg2dir(255.0), 0.725, 2.0);
++    normal = gerstnerWaveN(wPos, time, normal, Q, numWaves, 0.0045, deg2dir( 65.0), 0.7, 2.0);
++
++    return normal;
++}
++
++/* Compute the specular light on a water surface, and the opacity at
++ * the same time. The .a component of the result should be used as an
++ * absolute, not relative opacity.
++ */
++vec4 waterSpecularLight(
++    float baseOpacity, vec3 incomingDirLight, vec3 incomingUndirLight,
++    highp vec3 worldPos, highp vec3 viewPos, highp float time, highp vec3 normal) {
++
++    /* Compute the contribution of directional light (i.e. the sun and
++     * the moon) to the entire incoming light. */
++    vec3 incomingLight = incomingDirLight + incomingUndirLight;
++    vec3 dirLightRatio = incomingDirLight / (incomingLight + vec3(0.001));
++
++    /* The game doesn't tell us where the sun or the moon is, which is
++     * so unfortunate. We have to assume they are always at some fixed
++     * point. */
++    const highp vec3 lightDir = normalize(vec3(-2.5, 2.5, 0.0));
++
++    /* The intensity of the specular light is determined with the
++     * angle between the Blinn-Phong half vector and the normal. See:
++     * https://en.wikibooks.org/wiki/GLSL_Programming/GLUT/Specular_Highlights
++     * https://www.gamedev.net/forums/topic/625142-blinn-phong-with-fresnel-effect/
++     * http://filmicworlds.com/blog/everything-has-fresnel/
++     * https://hal.inria.fr/inria-00443630/file/article-1.pdf
++     */
++    highp vec3  viewDir      = -normalize(worldPos - viewPos);
++    const float shininess    = 80.0;
++
++    /* Compute the Fresnel term between the view vector and the half
++     * vector. When the angle is wide the water surface behaves more
++     * like a mirror than air. Note that constant "fresnel" is:
++     *
++     * [ iorIn - iorOut ]2
++     * | -------------- |   where iorIn = 1.0 (the refraction index
++     * [ iorIn + iorOut ]   of air) and iorOut = 1.33 (water).
++     */
++    const float fresnel      = 0.02;
++    highp vec3  halfDir      = normalize(viewDir + lightDir);
++    highp float incident     = max(0.0, dot(viewDir, halfDir)); // Cosine of the angle.
++    highp float reflAngle    = max(0.0, dot(halfDir, normal));
++    highp float reflCoeff    = fresnel + (1.0 - fresnel) * pow(1.0 - incident, 5.0);
++    highp float specCoeff    = pow(reflAngle, shininess) * reflCoeff;
++    highp vec3  specular     = incomingLight * 180.0 * specCoeff;
++
++    /* Compute the opacity of water. In real life when a light ray
++     * hits a surface of water, some part of it will reflect away, and
++     * the other part will refract and bounces back from the bottom
++     * (Fresnel effect). This means the opacity is dependent on the
++     * depth of water body. But we can't actually do it with just a
++     * single render pass so we have to somehow approximate it. Here
++     * we compute the Fresnel term between the normal and the view
++     * vector, and consider that the surface reflects all the possible
++     * incoming light rays (including ambient light and skylight), and
++     * when that happens the water is opaque. This is of course a
++     * crude hack and isn't based on the real optics. */
++    highp float viewAngle    = max(0.0, dot(normal, viewDir));
++    highp float opacCoeff    = fresnel + (1.0 - fresnel) * pow(1.0 - viewAngle, 5.0);
++    highp float opacity      = mix(baseOpacity, min(1.0, baseOpacity * 8.0), opacCoeff);
++
++    highp float sharpOpac    = smoothstep(0.1, 0.2, opacCoeff);
++    return vec4(
++        specular * dirLightRatio * sharpOpac + // Reflected directional light
++        opacCoeff * incomingLight * 0.15,      // Reflected undirectional light
++        mix(opacity, 1.0, specCoeff));
++}
++
++#endif /* !defined(NATURAL_MYSTIC_WATER_H_INCLUDED) */
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/particles.fragment src/shaders/glsl/particles.fragment
+--- orig/shaders/glsl/particles.fragment	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/particles.fragment	2019-01-27 21:22:10.000000000 +0900
+@@ -0,0 +1,115 @@
++// __multiversion__
++// This signals the loading code to prepend either #version 100 or #version 300 es as apropriate.
++
++#include "fragmentVersionCentroidUV.h"
++
++#include "uniformEntityConstants.h"
++#include "uniformShaderConstants.h"
++#include "uniformPerFrameConstants.h"
++#include "natural-mystic-color.h"
++
++LAYOUT_BINDING(0) uniform sampler2D TEXTURE_0;
++LAYOUT_BINDING(1) uniform sampler2D TEXTURE_1;
++
++#ifdef EFFECTS_OFFSET
++#include "uniformEffectsConstants.h"
++#endif
++
++varying vec4 color;
++
++#ifdef ENABLE_FOG
++varying vec4 fogColor;
++#endif
++
++flat varying float clearWeather; // [0, 1]
++
++#ifdef GLINT
++	varying vec2 layer1UV;
++	varying vec2 layer2UV;
++
++	vec4 glintBlend(vec4 dest, vec4 source) {
++		return vec4(source.rgb * source.rgb, 0.0) + dest;
++	}
++#endif
++
++void main()
++{
++#ifdef EFFECTS_OFFSET
++	vec4 diffuse = texture2D( TEXTURE_0,  uv + EFFECT_UV_OFFSET);
++#else
++	vec4 diffuse = texture2D( TEXTURE_0,  uv );
++#endif
++
++#ifdef MULTI_COLOR_TINT
++	// Texture is a mask for tinting with two colors
++	vec2 colorMask = diffuse.rg;
++
++	// Apply the base color tint
++	diffuse.rgb = colorMask.rrr * color.rgb;
++
++	// Apply the secondary color mask and tint so long as its grayscale value is not 0
++	diffuse.rgb = mix(diffuse, colorMask.gggg * CHANGE_COLOR, ceil(colorMask.g)).rgb;
++#endif
++
++#ifdef ALPHA_TEST
++#ifdef ENABLE_VERTEX_TINT_MASK
++	if(diffuse.a <= 0.0)
++#else
++	if(diffuse.a < 0.5)
++#endif
++	 	discard;
++#endif
++
++#if defined(ENABLE_VERTEX_TINT_MASK) && !defined(MULTI_COLOR_TINT)
++	diffuse.rgb = mix(diffuse.rgb, diffuse.rgb*color.rgb, diffuse.a);
++	if (color.a > 0.0) {
++		diffuse.a = (diffuse.a > 0.0) ? 1.0 : 0.0; // This line is needed for horse armour icon and dyed leather to work properly
++	}
++#endif
++
++#ifdef GLINT
++	vec4 layer1 = texture2D(TEXTURE_1, fract(layer1UV)).rgbr * GLINT_COLOR;
++	vec4 layer2 = texture2D(TEXTURE_1, fract(layer2UV)).rgbr * GLINT_COLOR;
++	vec4 glint = (layer1 + layer2);
++	glint.rgb *= color.a;
++
++	#ifdef INVENTORY
++		diffuse.rgb = glint.rgb;
++	#else
++		diffuse.rgb = glintBlend(diffuse, glint).rgb;
++	#endif
++#endif
++
++#ifdef USE_OVERLAY
++	//use either the diffuse or the OVERLAY_COLOR
++	diffuse.rgb = mix(diffuse, OVERLAY_COLOR, OVERLAY_COLOR.a).rgb;
++#endif
++
++#ifdef ENABLE_VERTEX_TINT_MASK
++
++#ifdef ENABLE_CURRENT_ALPHA_MULTIPLY
++	diffuse = diffuse * vec4(1.0, 1.0, 1.0, HUD_OPACITY);
++#endif
++
++#elif !defined(MULTI_COLOR_TINT)
++	diffuse = diffuse * color;
++#endif
++
++	// Fog needs to be applied after the color tinting.
++#ifdef ENABLE_FOG
++	//apply fog
++	diffuse.rgb = mix(diffuse.rgb, fogColor.rgb, fogColor.a);
++
++	/* When it's raining The color of particles should be highly
++	 * desaturated because it looks ugly when the rain drops look
++	 * blue. */
++	diffuse.rgb = desaturate(diffuse.rgb, mix(0.95, 0.0, clearWeather));
++#endif
++
++	gl_FragColor = diffuse;
++}
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: t
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/particles.vertex src/shaders/glsl/particles.vertex
+--- orig/shaders/glsl/particles.vertex	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/particles.vertex	2019-01-27 21:22:10.000000000 +0900
+@@ -0,0 +1,69 @@
++// __multiversion__
++// This signals the loading code to prepend either #version 100 or #version 300 es as apropriate.
++
++#include "vertexVersionCentroidUV.h"
++
++#include "uniformWorldConstants.h"
++#include "uniformEntityConstants.h"
++#include "uniformPerFrameConstants.h"
++#include "natural-mystic-hacks.h"
++
++attribute mediump vec4 POSITION;
++attribute vec4 COLOR;
++attribute vec2 TEXCOORD_0;
++
++varying vec4 color;
++
++#ifdef ENABLE_FOG
++varying vec4 fogColor;
++#endif
++
++flat varying float clearWeather; // [0, 1]
++
++#ifdef GLINT
++varying vec2 layer1UV;
++varying vec2 layer2UV;
++
++vec2 calculateLayerUV(float offset, float rotation) {
++	vec2 uv = TEXCOORD_0;
++	uv -= 0.5;
++	float rsin = sin(rotation);
++	float rcos = cos(rotation);
++	uv = mat2(rcos, -rsin, rsin, rcos) * uv;
++	uv.x += offset;
++	uv += 0.5;
++
++	return uv * GLINT_UV_SCALE;
++}
++#endif
++
++void main()
++{
++	gl_Position = WORLDVIEWPROJ * POSITION;
++
++	color = COLOR;
++	uv = TEXCOORD_0;
++
++#ifdef ENABLE_FOG
++	//fog
++    fogColor.rgb = FOG_COLOR.rgb;
++	fogColor.a = clamp(((gl_Position.z / RENDER_DISTANCE) - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
++	clearWeather = isClearWeather(FOG_CONTROL);
++#else
++	clearWeather = 1.0;
++#endif
++
++#ifdef USE_LIGHTING
++	color *= vec4(TILE_LIGHT_COLOR.xyz, 1.0);
++#endif
++
++#ifdef GLINT
++	layer1UV = calculateLayerUV(UV_OFFSET.x, UV_ROTATION.x);
++	layer2UV = calculateLayerUV(UV_OFFSET.y, UV_ROTATION.y);
++#endif
++}
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: t
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/rain_snow.fragment src/shaders/glsl/rain_snow.fragment
+--- orig/shaders/glsl/rain_snow.fragment	2019-01-27 21:22:10.000000000 +0900
++++ src/shaders/glsl/rain_snow.fragment	2019-01-27 21:22:10.000000000 +0900
+@@ -3,6 +3,7 @@
+ 
+ #include "fragmentVersionSimple.h"
+ #include "uniformMacro.h"
++#include "natural-mystic-color.h"
+ 
+ LAYOUT_BINDING(0) uniform sampler2D TEXTURE_0;
+ LAYOUT_BINDING(1) uniform sampler2D TEXTURE_1;
+@@ -56,9 +57,16 @@
+ 	vec4 finalOutput = albedo;
+ 	finalOutput.rgb *= lighting.rgb;
+ 
++	/* The color of particles should be highly desaturated because it
++	 * looks ugly when the rain looks blue. */
++	finalOutput.rgb = desaturate(finalOutput.rgb, 0.9);
++
+ 	//apply fog
+ 	gl_FragColor.rgb = mix( finalOutput.rgb, fogColor.rgb, fogColor.a );
+ 	gl_FragColor.a = finalOutput.a;
+ }
+ 
+-
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: t
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/renderchunk.fragment src/shaders/glsl/renderchunk.fragment
+--- orig/shaders/glsl/renderchunk.fragment	2018-12-19 20:54:50.000000000 +0900
++++ src/shaders/glsl/renderchunk.fragment	2019-02-19 07:47:50.000000000 +0900
+@@ -20,6 +20,18 @@
+ 	#endif
+ #endif
+ 
++/* Workaround for https://bugs.mojang.com/browse/MCPE-40059 */
++#if defined(MCPE40059)
++varying highp vec3 wPos;
++varying float cameraDist;
++varying highp vec3 vNormal;
++varying float flickerFactor;
++varying float desatFactor;
++flat varying float clearWeather;
++flat varying float waterFlag;
++varying float waterPlane;
++#endif
++
+ varying vec4 color;
+ 
+ #ifdef FOG
+@@ -27,7 +39,15 @@
+ #endif
+ 
+ #include "uniformShaderConstants.h"
++#include "uniformPerFrameConstants.h"
+ #include "util.h"
++#include "natural-mystic-color.h"
++#include "natural-mystic-config.h"
++#include "natural-mystic-fog.h"
++#include "natural-mystic-hacks.h"
++#include "natural-mystic-light.h"
++#include "natural-mystic-rain.h"
++#include "natural-mystic-water.h"
+ 
+ LAYOUT_BINDING(0) uniform sampler2D TEXTURE_0;
+ LAYOUT_BINDING(1) uniform sampler2D TEXTURE_1;
+@@ -66,28 +86,259 @@
+ 	diffuse.a *= inColor.a;
+ #endif
+ 
+-#if !defined(ALWAYS_LIT)
+-	diffuse *= texture2D( TEXTURE_1, uv1 );
+-#endif
+-
+ #ifndef SEASONS
+ 	#if !USE_ALPHA_TEST && !defined(BLEND)
+ 		diffuse.a = inColor.a;
+ 	#endif
+ 	
+ 	diffuse.rgb *= inColor.rgb;
++
++	/* The game appears to encode an ambient occlusion in the vertex
++	 * color in this case. Abuse it to create more shadows. */
++	float occlusion = occlusionFactor(inColor.rgb);
+ #else
+ 	vec2 uv = inColor.xy;
+ 	diffuse.rgb *= mix(vec3(1.0,1.0,1.0), texture2D( TEXTURE_2, uv).rgb*2.0, inColor.b);
+ 	diffuse.rgb *= inColor.aaa;
+ 	diffuse.a = 1.0;
++
++	float occlusion = 1.0; /* Assume it's not occluded at all. */
++#endif
++
++	/* Fetch the level of daylight (i.e. the one which darkens at
++	 * night) from the light map passed by the upstream. Note that we
++	 * intentionally reduce the dynamic range because the upstream
++	 * daylight level doesn't drop to zero at night. */
++	float daylight = texture2D(TEXTURE_1, vec2(0.0, 1.0)).r;
++	daylight = smoothstep(0.4, 1.0, daylight);
++
++	/* Fetch the level of ambient light from the light map passed by
++	 * the upstream. The constant multiplifier is determined so the
++	 * intensity will be 6 on the Overworld and 26 in the
++	 * Nether/End. */
++	float ambientBrightness = texture2D(TEXTURE_1, vec2(0.0, 0.0)).r * 44.797;
++
++	/* Calculate the color of the ambient light based on the fog
++	 * color. We'll use it at several places. Note that the .a
++	 * component denotes the intensity. */
++#if defined(UNDERWATER)
++	const bool isUnderwater = true;
++#else
++	const bool isUnderwater = false;
++#endif /* defined(UNDERWATER) */
++
++	vec3 ambientColor;
++#if defined(FOG) && defined(MCPE40059)
++	if (isRenderDistanceFog(FOG_CONTROL)) {
++		/* Don't use the fog color in this case, as it would be
++		 * slightly different from the color of near terrain. */
++		ambientColor = ambientLightColor(uv1.y, daylight);
++	}
++	else {
++		/* The existence of bad weather fog (and also underwater fog)
++		 * should increase the intensity of ambient light (#32). But
++		 * at night it should work the other way.
++		 */
++		if (isUnderwater) {
++			ambientColor = ambientLightColor(fogColor);
++			ambientBrightness *= mix(0.9, 1.4, daylight);
++		}
++		else {
++			ambientColor = mix(
++				ambientLightColor(fogColor),
++				ambientLightColor(uv1.y, daylight),
++				clearWeather);
++			ambientBrightness *= mix(mix(0.9, 1.4, daylight), 1.0, clearWeather);
++		}
++	}
++#else
++	ambientColor = ambientLightColor(uv1.y, daylight);
++#endif /* defined(FOG) */
++
++	/* Save the diffused color here as the color of the material. We
++	 * are going to redo all the lightings with our own HDR method. */
++	vec3 pigment = diffuse.rgb;
++
++	/* Accumulate all the light to one linear RGB vector. We are going
++	 * to use it for diffuse lighting, and also specular lighting. */
++	vec3 dirLight   = vec3(0);
++	vec3 undirLight = vec3(0);
++
++	undirLight += ambientLight(ambientColor, ambientBrightness);
++#if defined(FOG) && defined(MCPE40059)
++	/* When it's raining the sunlight shouldn't affect the scene
++	 * (#24), but we cannot treat the rain as a boolean switch as that
++	 * would cause #40. */
++	if (isUnderwater) {
++		dirLight += sunlight(uv1.y, daylight);
++		dirLight += moonlight(uv1.y, daylight);
++	}
++	else {
++		dirLight += sunlight(uv1.y, daylight) * clearWeather;
++		dirLight += moonlight(uv1.y, daylight) * clearWeather;
++	}
++#else
++	dirLight += sunlight(uv1.y, daylight);
++	dirLight += moonlight(uv1.y, daylight);
++#endif /* FOG */
++	undirLight += skylight(uv1.y, daylight);
++#if defined(MCPE40059)
++	/* Torchlight is directional, but since we don't actually know
++	 * their directions we have to consider it as undirectional. */
++	undirLight += torchLight(uv1.x, uv1.y, daylight, flickerFactor);
++#endif
++
++	/* Light sources should be significantly brighter than regular
++	 * objects. */
++#if defined(ALWAYS_LIT)
++	undirLight += emissiveLight(flickerFactor);
+ #endif
+ 
++	/* Now we finished accumulating light. Compute the diffuse light
++	 * and the specular light here. We assume the color of specular
++	 * light is always the same as the color of accumulated light. */
++#if defined(MCPE40059)
++	vec3  sNormal = normalize(cross(dFdx(wPos), dFdy(wPos)));
++	float wet     = wetness(clearWeather, uv1.y);
++	if (waterFlag > 0.5) {
++		/* Compute the specular light and the opacity of water. It is
++		 * tempting to do this only when defined(BLEND), but if we do
++		 * that water in far terrain will have different colors.
++		 *
++		 * We need a per-fragment normal here, which is an
++		 * interpolated vertex normal passed by our vertex
++		 * shader. However, we can't compute it correctly for anything
++		 * other than flat top surfaces because the game doesn't tell
++		 * us anything about normals. In the fragment shader we can
++		 * compute the surface normal with dFdx/dFdy but it's only a
++		 * normal of flat triangles. Luckily for us as the water
++		 * volume decreases the perturbance also decreases and thus
++		 * the surface becomes more and more flat. So to disguise the
++		 * problem we mix the flat surface normal with the smooth,
++		 * analytical but the incorrect one, using the volume. */
++		vec3 fNormal  = normalize(mix(sNormal, vNormal, waterPlane));
++
++#  if defined(ENABLE_WAVES)
++		/* Perturb the normal even more, but this time with much higher
++		 * frequencies. This is a kind of bump mapping. */
++		const float distThreshold = 0.6;
++		const float distFadeStart = distThreshold * 0.8;
++		if (cameraDist < distThreshold) {
++			/* But perturbing the normal on far geometry doesn't
++			 * contribute to the overall quality, and it may even cause
++			 * aliasing. */
++			fNormal = mix(waterWaveNormal(wPos, TIME, fNormal), fNormal,
++						  smoothstep(distFadeStart, distThreshold, cameraDist));
++			fNormal = normalize(fNormal);
++		}
++#  endif /* defined(ENABLE_WAVES) */
++
++		diffuse.rgb  = pigment * (dirLight + undirLight);
++		diffuse.rgb *= 0.5; // Darken the base water color.
++
++#  if defined(ENABLE_SPECULAR)
++		vec4 specular = waterSpecularLight(diffuse.a, dirLight, undirLight, wPos, VIEW_POS, TIME, fNormal);
++
++		diffuse.rgb += specular.rgb;
++		diffuse.a    = specular.a;
++#  endif /* defined(ENABLE_SPECULAR) */
++
++#  if defined(ENABLE_RIPPLES)
++		if (wet > 0.0) {
++			diffuse.rgb += wet * ripples(dirLight + undirLight, wPos, cameraDist, TIME, fNormal);
++		}
++#  endif /* defined(ENABLE_RIPPLES) */
++	}
++	else {
++#  if defined(ENABLE_OCCLUSION_SHADOWS)
++		/* The intensity of directional light should be affected by the
++		 * occlusion factor. */
++		const float occlShadow = 0.35;
++		dirLight *= mix(occlShadow, 1.0, occlusion);
++#  endif /* defined(ENABLE_OCCLUSION_SHADOWS) */
++
++		/* Wet ground should have reduced diffuse light if it's made
++		 * of a rough material. But for now it's a constant value
++		 * because we don't know what a material it's made of. */
++		diffuse.rgb = pigment * (dirLight + undirLight);
++		diffuse.rgb *= mix(1.0, 0.5, wet);
++
++#  if defined(ENABLE_SPECULAR)
++		const float fresnel   = 0.04;
++		const float shininess = 2.0;
++		vec3 specular = specularLight(fresnel, shininess, dirLight, undirLight, wPos, VIEW_POS, sNormal);
++
++		diffuse.rgb *= 1.0 - fresnel;
++		diffuse.rgb += specular * mix(1.0, 5.0, wet);
++#  endif /* defined(ENABLE_SPECULAR) */
++
++#  if defined(ENABLE_RIPPLES)
++		if (wet > 0.0) {
++			diffuse.rgb += wet * ripples(dirLight + undirLight, wPos, cameraDist, TIME, sNormal);
++		}
++#  endif /* defined(ENABLE_RIPPLES) */
++	}
++#endif /* defined(MCPE40059) */
++
++	diffuse.rgb = uncharted2ToneMap(diffuse.rgb, 112.0, 1.0);
++	diffuse.rgb = contrastFilter(diffuse.rgb, 1.25);
++
++	/* Reduce the contrast of far objects (#5). The overall color
++	 * should lean towards the ambient. And we also apply a permanent
++	 * fog. It should ideally be biome-specific (#9) but we can't do
++	 * that currently, so we always use the ambient color. */
++#if defined(ENABLE_BASE_FOG) && defined(MCPE40059)
++	const float contrast   = 0.45;
++	const float fogDensity = 0.4;
++	diffuse.rgb = mix(
++		diffuse.rgb,
++		mix(contrastFilter(diffuse.rgb, contrast) * ambientColor,
++			fogBrightness(uv1.x, uv1.y, daylight) * ambientColor,
++			fogDensity),
++		desatFactor);
++#endif
++
++	/* We can't apply fogs before doing tone mapping, because that
++	 * changes the fog color and breaks "render distance fog". */
+ #ifdef FOG
++	if (isUnderwater || isRenderDistanceFog(FOG_CONTROL)) {
+ 	diffuse.rgb = mix( diffuse.rgb, fogColor.rgb, fogColor.a );
++	}
++	else {
++		/* During a bad weather everything should look dull. We do a
++		 * desaturation for that (#6). The reason for the mix() is so
++		 * fogs not only reduce saturation but also contrast.
++		 */
++		diffuse.rgb = mix(
++			desaturate(diffuse.rgb, fogColor.a) * ambientColor,
++			fogColor.rgb,
++			fogColor.a);
++	}
+ #endif
+ 
++#if defined(DEBUG_SHOW_VERTEX_COLOR)
++	diffuse = color;
++
++#elif defined(DEBUG_SHOW_SUNLIGHT_LEVEL)
++	diffuse.rgb = vec3(uv1.y);
++
++#elif defined(DEBUG_SHOW_OCCLUSION_FACTOR)
++	diffuse.rgb = vec3(occlusion);
++
++#elif defined(DEBUG_SHOW_FOG_COLOR)
++	diffuse.rgb = FOG_COLOR.rgb;
++
++#elif defined(DEBUG_SHOW_FOG_CONTROL) && defined(MCPE40059)
++	diffuse.rgb = vec3(cameraDist < 0.5 ? FOG_CONTROL.x : FOG_CONTROL.y);
++
++#endif /* DEBUG */
++
+ 	gl_FragColor = diffuse;
+ 	
+ #endif // BYPASS_PIXEL_SHADER
+ }
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: t
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/renderchunk.vertex src/shaders/glsl/renderchunk.vertex
+--- orig/shaders/glsl/renderchunk.vertex	2018-12-19 20:54:50.000000000 +0900
++++ src/shaders/glsl/renderchunk.vertex	2019-02-06 09:14:46.000000000 +0900
+@@ -14,6 +14,19 @@
+ 	#endif
+ #endif
+ 
++/* Workaround for https://bugs.mojang.com/browse/MCPE-40059 */
++#if defined(MCPE40059)
++varying highp vec3 wPos;
++varying float cameraDist;
++varying highp vec3 vNormal; // Vertex normal in the world space. Only
++							// defined when waterPlane > 0.0.
++varying float flickerFactor;
++varying float desatFactor;
++flat varying float clearWeather; // [0, 1]
++flat varying float waterFlag;    // 0.0 or 1.0
++varying float waterPlane;        // [0, 1]
++#endif
++
+ #ifndef BYPASS_PIXEL_SHADER
+ 	varying vec4 color;
+ #endif
+@@ -26,6 +39,12 @@
+ #include "uniformPerFrameConstants.h"
+ #include "uniformShaderConstants.h"
+ #include "uniformRenderChunkConstants.h"
++#include "natural-mystic-color.h"
++#include "natural-mystic-config.h"
++#include "natural-mystic-fog.h"
++#include "natural-mystic-hacks.h"
++#include "natural-mystic-light.h"
++#include "natural-mystic-water.h"
+ 
+ attribute POS4 POSITION;
+ attribute vec4 COLOR;
+@@ -40,6 +59,9 @@
+ void main()
+ {
+     POS4 worldPos;
++#if !defined(MCPE40059)
++	float cameraDist;
++#endif
+ #ifdef AS_ENTITY_RENDERER
+ 		POS4 pos = WORLDVIEWPROJ * POSITION;
+ 		worldPos = pos;
+@@ -61,28 +83,110 @@
+ 	color = COLOR;
+ #endif
+ 
+-///// find distance from the camera
++#if defined(MCPE40059)
++	/* THINKME: In theory this should be the position of the
++	 * vertex in the world coordinates without getting affected by
++	 * the view position, but actually it's not working as
++	 * expected. I don't know why. (#36) */
++	wPos = worldPos.xyz;
+ 
+-#if defined(FOG) || defined(BLEND)
+-	#ifdef FANCY
++	vNormal = vec3(0);
++	flickerFactor = 1.0;
++#  if defined(ENABLE_TORCH_FLICKER)
++	if (uv1.x > 0.0) {
++		flickerFactor = torchLightFlicker(worldPos.xyz, TIME);
++	}
++#  endif
++#endif /* defined(MCPE40059) */
++
++///// find distance from the camera
+ 		vec3 relPos = -worldPos.xyz;
+ 		float cameraDepth = length(relPos);
++	cameraDist = cameraDepth / RENDER_DISTANCE;
++
++	/* Reduce the contrast of far objects (#5). The overall color
++	 * should lean towards the ambient. Note that cameraDist is a
++	 * normalized camera distance being 1.0 at the point where the far
++	 * terrain fog ends. */
++#if defined(FANCY) && defined(MCPE40059)
++	desatFactor = exponentialFog(vec2(0.0, 4.0), cameraDist);
++#endif
++
++	/* Detect the weather on the Overworld. */
++#if defined(MCPE40059)
++#  if defined(FOG)
++	clearWeather = isClearWeather(FOG_CONTROL);
+ 	#else
+-		float cameraDepth = pos.z;
++	clearWeather = 1.0;
+ 	#endif
+ #endif
+ 
+ ///// apply fog
+ 
+ #ifdef FOG
+-	float len = cameraDepth / RENDER_DISTANCE;
++	float len = cameraDist;
+ 	#ifdef ALLOW_FADE
+ 		len += RENDER_CHUNK_FOG_ALPHA;
+ 	#endif
+ 
+     fogColor.rgb = FOG_COLOR.rgb;
+-	fogColor.a = clamp((len - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
++#  if defined(FOG_TYPE)
++#    if FOG_TYPE == FOG_TYPE_LINEAR
++	fogColor.a = linearFog(FOG_CONTROL, len);
++#    elif FOG_TYPE == FOG_TYPE_EXP
++	fogColor.a = exponentialFog(FOG_CONTROL, len);
++#    elif FOG_TYPE == FOG_TYPE_EXP2
++	fogColor.a = exponentialSquaredFog(FOG_CONTROL, len);
++#    endif
++#  else
++	fogColor.a = 0.0; /* Fog disabled? Really?? */
++#  endif /* defined(FOG_TYPE) */
++#endif /* FOG */
++
++	/* Waves */
++	vec3 hsvColor = rgb2hsv(COLOR.rgb);
++#if defined(MCPE40059)
++	waterFlag  = isWater(hsvColor) ? 1.0 : 0.0;
++	waterPlane = 0.0;
++#endif
++#if !defined(BYPASS_PIXEL_SHADER) && !defined(AS_ENTITY_RENDERER) && defined(ENABLE_WAVES) && defined(MCPE40059)
++#  if defined(ALPHA_TEST)
++	/* ALPHA_TEST means that the block being rendered isn't a solid
++	 * opaque one. This excludes grass blocks especially. */
++	bool grassFlag = isGrass(hsvColor);
++#  else
++	const bool grassFlag = false;
+ #endif
++	if (grassFlag) {
++		POS3 posw = POSITION.xyz;
++		highp float wave = sin(TIME * 3.5 + 2.0 * posw.x + 2.0 * posw.z + posw.y);
++		gl_Position.x += wave * 0.015;
++	}
++	else if (waterFlag > 0.5) {
++		/* We want water to swell in proportion to its volume. The more
++		 * the vertex is close to the ground (i.e. integral points in the
++		 * world position), the less the vertex should swell. Without this
++		 * tweak the water will leave the ground. */
++		highp float volume = fract(POSITION.y);
++		if (volume > 0.0) {
++			highp vec3 wPos1     = waterWaveGeometric(wPos, TIME, vNormal);
++			highp vec3 wPosDelta = (wPos1 - wPos) * volume;
++			worldPos.xyz += wPosDelta;
++			wPos          = worldPos.xyz + VIEW_POS;
++			gl_Position   = PROJ * (WORLDVIEW * worldPos);
++		}
++
++#  if defined(FANCY)
++		/* When we know the surface normal we can do something
++		 * advanced. */
++		if (isWaterPlane(POSITION)) {
++			waterPlane = 1.0;
++		}
++		// The default opacity of water is way too high. Reduce it.
++		color.a *= 0.5;
++#  endif /* defined(FANCY) */
++	}
++#endif /* !defined(BYPASS_PIXEL_SHADER) && !defined(AS_ENTITY_RENDERER) && defined(ENABLE_WAVES) */
+ 
+ ///// blended layer (mostly water) magic
+ #ifdef BLEND
+@@ -91,18 +195,13 @@
+ 	bool shouldBecomeOpaqueInTheDistance = color.a < 0.95;
+ 	if(shouldBecomeOpaqueInTheDistance) {
+ 		#ifdef FANCY  /////enhance water
+-			float cameraDist = cameraDepth / FAR_CHUNKS_DISTANCE;
+-			color = COLOR;
+ 		#else
+ 			// Completely insane, but if I don't have these two lines in here, the water doesn't render on a Nexus 6
+ 			vec4 surfColor = vec4(color.rgb, 1.0);
+ 			color = surfColor;
+-				
+-			vec3 relPos = -worldPos.xyz;
+-			float camDist = length(relPos);
+-			float cameraDist = camDist / FAR_CHUNKS_DISTANCE;
+ 		#endif //FANCY
+ 		
++		float cameraDist = cameraDepth / FAR_CHUNKS_DISTANCE;
+ 		float alphaFadeOut = clamp(cameraDist, 0.0, 1.0);
+ 		color.a = mix(color.a, 1.0, alphaFadeOut);
+ 	}
+@@ -115,3 +214,8 @@
+ 	#endif
+ #endif
+ }
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: t
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/sky.fragment src/shaders/glsl/sky.fragment
+--- orig/shaders/glsl/sky.fragment	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/sky.fragment	2019-01-27 21:22:10.000000000 +0900
+@@ -0,0 +1,80 @@
++// __multiversion__
++// This signals the loading code to prepend either #version 100 or #version 300 es as apropriate.
++
++#include "fragmentVersionSimple.h"
++#include "uniformPerFrameConstants.h"
++#include "natural-mystic-cloud.h"
++#include "natural-mystic-config.h"
++
++varying vec4 skyColor;
++varying vec4 cloudColor;
++varying vec3 worldPos;
++varying float camDist;
++
++void main() {
++#if defined(ENABLE_FBM_CLOUDS)
++
++    /* NOTE: It seems modifying materials/fancy.json takes no effect
++     * on 1.8. We want to reduce the number of octaves when
++     * !defined(FANCY) but we can't do it for now, because FANCY gets
++     * never defined in this shader. */
++    const int octaves = 6;
++
++    /* We are going to perform a (sort of) volumetric ray marching to
++     * compute self-casting shadows of clouds (#46), but with only a
++     * few steps. This is because ray marching is terribly expensive
++     * as we cannot precompute noises in a texture and instead we have
++     * to generate them on the fly. See also
++     * http://www.iquilezles.org/www/articles/dynclouds/dynclouds.htm */
++    highp float density = cloudMap(octaves, 0.5, 0.85, TIME, worldPos);
++    vec4 shadedCloud = mix(vec4(cloudColor.rgb, 0.0), cloudColor, density);
++
++#  if defined(ENABLE_CLOUD_SHADE)
++    /* Optimization: Don't bother to do it when there are no clouds at
++     * the current position. */
++    if (density > 0.0) {
++        /* The game doesn't tell us where the sun or the moon is,
++         * which is so unfortunate. We have to assume they are always
++         * at a fixed point. */
++        const highp vec3 sunMoonPos = vec3(-0.3, 4.0, 0);
++
++        const int   numSteps = 1; /* Yes, it has to be this few, or
++                                   * we'll get a lag. */
++        const float stepSize = 0.2;
++        vec3        rayStep  = normalize(sunMoonPos - worldPos) * stepSize;
++        highp vec3  rayPos   = worldPos;
++        float       inside   = 0.0;
++        for (int i = 0; i < numSteps; i++) {
++            rayPos += rayStep;
++            highp float height = cloudMap(octaves / 2, 0.4, 1.0, TIME, rayPos);
++            inside += max(0.0, height - (rayPos.y - worldPos.y));
++        }
++        /* Average of height differences. This isn't a distance of ray
++         * traveled inside clouds in a normal sense, but if we do it
++         * strictly we get severe banding artifacts (because of the
++         * number of steps being too few). */
++        inside /= float(numSteps);
++
++        float brightness = cloudColor.r;
++        shadedCloud.rgb = mix(
++            shadedCloud.rgb + 0.1 * brightness, // highlight
++            max(vec3(0.0), shadedCloud.rgb - 0.2 * brightness), // shade
++            inside);
++    }
++#  endif /* defined(ENABLE_CLOUD_SHADE) */
++    shadedCloud.rgb = mix(skyColor.rgb, shadedCloud.rgb, shadedCloud.a);
++
++    /* Clouds near the horizon should be blended back to the sky
++     * color, or otherwise the planar nature of the sky plane will be
++     * even more apparent. */
++    gl_FragColor = mix(shadedCloud, skyColor, smoothstep(0.9, 1.0, camDist));
++
++#else
++    gl_FragColor = skyColor;
++#endif /* ENABLE_FBM_CLOUDS */
++}
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: nil
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/sky.vertex src/shaders/glsl/sky.vertex
+--- orig/shaders/glsl/sky.vertex	2018-12-24 15:35:24.000000000 +0900
++++ src/shaders/glsl/sky.vertex	2019-01-06 11:45:25.000000000 +0900
+@@ -6,11 +6,15 @@
+ #include "uniformWorldConstants.h"
+ #include "uniformPerFrameConstants.h"
+ #include "uniformShaderConstants.h"
++#include "natural-mystic-color.h"
+ 
+ attribute mediump vec4 POSITION;
+ attribute vec4 COLOR;
+ 
+-varying vec4 color;
++varying vec4 skyColor;
++varying vec4 cloudColor;
++varying vec3 worldPos;
++varying float camDist;
+ 
+ const float fogNear = 0.3;
+ 
+@@ -18,5 +22,21 @@
+ {
+     gl_Position = WORLDVIEWPROJ * POSITION;
+ 
+-    color = mix( CURRENT_COLOR, FOG_COLOR, COLOR.r );
++    skyColor = mix( CURRENT_COLOR, FOG_COLOR, COLOR.r );
++    worldPos = POSITION.xyz;
++    camDist = length(worldPos);
++
++    /* The color of clouds resembles that of the sky, but is more
++     * close to that of the fog. This way we will have something like
++     * a sunlight-reflected-by-clouds effect (but more
++     * lightgray-ish). */
++    float brightness = clamp(desaturate(FOG_COLOR.rgb, 1.0).r + 0.05, 0.105, 1.0);
++    cloudColor     = mix(skyColor, FOG_COLOR, 0.9);
++    cloudColor     = mix(cloudColor, vec4(1.0), brightness);
++    cloudColor.rgb = desaturate(cloudColor.rgb, 0.4);
+ }
+\ No newline at end of file
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: nil
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/stars.vertex src/shaders/glsl/stars.vertex
+--- orig/shaders/glsl/stars.vertex	1970-01-01 09:00:00.000000000 +0900
++++ src/shaders/glsl/stars.vertex	2019-01-12 12:20:13.000000000 +0900
+@@ -0,0 +1,38 @@
++// __multiversion__
++// This signals the loading code to prepend either #version 100 or #version 300 es as apropriate.
++
++#include "vertexVersionSimple.h"
++#include "uniformPerFrameConstants.h"
++#include "uniformWorldConstants.h"
++#include "natural-mystic-config.h"
++#include "natural-mystic-noise.h"
++
++attribute mediump vec4 POSITION;
++attribute vec4 COLOR;
++
++varying vec4 color;
++
++/* Generate a pattern of brightness of stars based on a world
++ * position. */
++highp float stars(highp vec3 pos) {
++    const highp vec2 resolution = vec2(0.3);
++
++    highp vec2 st = pos.xz / resolution;
++    return (simplexNoise(st) + 1.0) * 0.5;
++}
++
++void main()
++{
++    gl_Position = WORLDVIEWPROJ * POSITION;
++
++    color = COLOR;
++
++#if defined(ENABLE_RANDOM_STARS)
++    color.rgb *= vec3(stars(POSITION.xyz));
++#endif
++}
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: nil
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/shaders/glsl/uniformPerFrameConstants.h src/shaders/glsl/uniformPerFrameConstants.h
+--- orig/shaders/glsl/uniformPerFrameConstants.h	2018-12-25 21:14:40.000000000 +0900
++++ src/shaders/glsl/uniformPerFrameConstants.h	2018-12-25 21:15:55.000000000 +0900
+@@ -8,7 +8,7 @@
+ #endif
+ // BEGIN_UNIFORM_BLOCK(PerFrameConstants) - unfortunately this macro does not work on old Amazon platforms so using above 3 lines instead
+ UNIFORM vec3 VIEW_POS;
+-UNIFORM float TIME;
++UNIFORM highp float TIME;
+ UNIFORM vec4 FOG_COLOR;
+ UNIFORM vec2 FOG_CONTROL;
+ UNIFORM float RENDER_DISTANCE;
+@@ -16,3 +16,8 @@
+ END_UNIFORM_BLOCK
+ 
+ #endif
++
++// Local Variables:
++// mode: glsl
++// indent-tabs-mode: t
++// End:
+diff --ignore-all-space --minimal --recursive --unidirectional-new-file --unified --exclude=natural-mystic-shaders-1.7.0.diff --exclude='*.svg' --exclude='*.in' --exclude='*.in~' --exclude='Makefile*' --exclude='manifest.*' orig/splashes.json src/splashes.json
+--- orig/splashes.json	1970-01-01 09:00:00.000000000 +0900
++++ src/splashes.json	2018-12-19 21:52:21.000000000 +0900
+@@ -0,0 +1,5 @@
++{
++    "splashes": [
++        "Natural Mystic Shaders enabled."
++    ]
++}

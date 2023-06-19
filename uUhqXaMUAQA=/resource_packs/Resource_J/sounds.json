@@ -1,0 +1,86 @@
+{
+	"entity_sounds": {
+		"entities": {
+			"jsa:jet1": {
+				"volume": 5,
+				"pitch": [
+				1,
+				1
+				],
+				"events": {
+					"mad": " ",
+					"ambient": " ",
+              " step": " ",
+					"hurt": " ",
+					"swim": "jetski.run",
+					"death": " ",
+					"flap": " "
+              }
+				},
+	    		"jsa:jet2": {
+				"volume": 5,
+				"pitch": [
+				1,
+				1
+				],
+				"events": {
+					"mad": " ",
+					"ambient": " ",
+              " step": " ",
+					"hurt": " ",
+					"swim": "jetski.run",
+					"death": " ",
+					"flap": " "
+              }
+				},
+	     		"jsa:jet3": {
+				"volume": 5,
+				"pitch": [
+				1,
+				1
+				],
+				"events": {
+					"mad": " ",
+					"ambient": " ",
+              " step": " ",
+					"hurt": " ",
+					"swim": "jetski.run",
+					"death": " ",
+					"flap": " "
+              }
+				},
+	   		"jsa:jet4": {
+				"volume": 5,
+				"pitch": [
+				1,
+				1
+				],
+				"events": {
+					"mad": " ",
+					"ambient": " ",
+              " step": " ",
+					"hurt": " ",
+					"swim": "jetski.run",
+					"death": " ",
+					"flap": " "
+              }
+				},
+	    		"jsa:jet5": {
+				"volume": 5,
+				"pitch": [
+				1,
+				1
+				],
+				"events": {
+					"mad": " ",
+					"ambient": " ",
+              " step": " ",
+					"hurt": " ",
+					"swim": "jetski.run",
+					"death": " ",
+					"flap": " "
+				}
+			}
+      }
+   }
+}

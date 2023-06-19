@@ -1,0 +1,62 @@
+{
+
+   "format_version": 1,
+   "header": {
+      "description": "§7by © Cubitos MC",
+      "name": "§fCustom Shields §ePack 2",
+      "uuid": "34bf8081-cb63-4585-a893-6817d4e2b546",
+      "version": [0, 0, 1]
+,
+      "min_engine_version": [1, 2, 6]
+   },
+   "modules": [
+      {
+         "description": "",
+            "type": "resources",
+            "uuid": "6e23b157-b4da-4599-ab6c-cbed8b37f92c",
+            "version": [0, 0, 1]
+      }
+   ],
+   "subpacks": [
+   {
+      "folder_name": "Redstone_shield",
+      "name": "§cRedstone_shield",
+      "memory_tier": 1
+      },
+   {
+      "folder_name": "Creeper_shield",
+      "name": "§aCreeper_shield",
+      "memory_tier": 1
+      },
+   {
+      "folder_name": "Enderman_shield",
+      "name": "§dEnderman_shield",
+      "memory_tier": 1
+      },
+   {
+      "folder_name": "Mojang_shield",
+      "name": "§cMojang_§fshield",
+      "memory_tier": 1
+      },
+   {
+      "folder_name": "Diamond_shield",
+      "name": "§bDiamond_shield",
+      "memory_tier": 1
+      },
+   {
+      "folder_name": "Pillage_shield",
+      "name": "§6Pillage_shield",
+      "memory_tier": 1
+      },
+   {
+      "folder_name": "Miner_shield",
+      "name": "§9Miner_shield",
+      "memory_tier": 1
+      },
+   {
+      "folder_name": "Fire_shield",
+      "name": "§6Fire_§cshield",
+      "memory_tier": 1
+      }
+    ]
+ }

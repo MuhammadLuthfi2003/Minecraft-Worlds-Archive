@@ -1,0 +1,20 @@
+{
+  "format_version": "1.8.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "carlton:6",
+      "materials": { "default": "cars" },
+      "textures": {
+        "default": "textures/entity/car/carlton_6"
+      },
+      "geometry": {
+        "default": "geometry.carlton"
+      },
+      "render_controllers": [ "controller.render.car" ],
+      "spawn_egg": {
+        "texture": "egg_carlton",
+        "texture_index": 0
+      }
+    }
+  }
+}

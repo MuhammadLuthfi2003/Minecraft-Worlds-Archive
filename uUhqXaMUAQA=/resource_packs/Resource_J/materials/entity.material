@@ -1,0 +1,11 @@
+{
+  "materials": {
+    "version": "1.0.0",
+
+    "jet1:entity_alphatest": {},
+    "jet2:entity_alphatest": {},
+    "jet3:entity_alphatest": {},
+    "jet4:entity_alphatest": {},
+    "jet5:entity_alphatest": {}
+  }
+}

@@ -1,0 +1,12 @@
+{
+	"jetski.run": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/jetski/run",
+				"volume": 3.0,
+				"load_on_low_memory": true
+		    }
+        ]
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "format_version":"1.8.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "jsa:jet5",
+      "materials": {
+        "default": "jet5"
+      },
+      "textures": {
+        "default": "textures/jet5"
+      },
+      "geometry": {
+        "default": "geometry.jet1"
+      },
+      "render_controllers": [ "controller.render.jet5" ],
+      "spawn_egg": {
+        "base_color": "#FFFFFF",
+        "overlay_color": "#AF2DF3"
+      }
+    }
+  }
+}

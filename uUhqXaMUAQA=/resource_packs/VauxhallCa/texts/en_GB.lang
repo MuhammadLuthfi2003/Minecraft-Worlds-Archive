@@ -1,0 +1,30 @@
+﻿## Comments can be added anywhere on a valid line by starting with '##'
+##
+## Note, trailing spaces will NOT be trimmed. If you want room between the end of the string and the start of a
+## comment on the same line, use TABs.
+accessibility.disableTTS=Text To Speech disabled
+accessibility.enableTTS=Text To Speech enabled
+
+item.spawn_egg.entity.carlton:1.name=Vauxhall Carlton Base (White)
+item.spawn_egg.entity.carlton:2.name=Vauxhall Carlton Retro (White)
+item.spawn_egg.entity.carlton:3.name=Vauxhall Carlton Fleet (White)
+item.spawn_egg.entity.carlton:4.name=Vauxhall Carlton GSi (White)
+item.spawn_egg.entity.carlton:5.name=Vauxhall Lotus Carlton (White)
+item.spawn_egg.entity.carlton:6.name=Vauxhall Carlton Base (Grey)
+item.spawn_egg.entity.carlton:7.name=Vauxhall Carlton Retro (Grey)
+item.spawn_egg.entity.carlton:8.name=Vauxhall Carlton Fleet (Grey)
+item.spawn_egg.entity.carlton:9.name=Vauxhall Carlton GSi (Grey)
+item.spawn_egg.entity.carlton:10.name=Vauxhall Lotus Carlton (Grey)
+item.spawn_egg.entity.carlton:11.name=Vauxhall Carlton Base (Red)
+item.spawn_egg.entity.carlton:12.name=Vauxhall Carlton Retro (Red)
+item.spawn_egg.entity.carlton:13.name=Vauxhall Carlton GSi (Red)
+item.spawn_egg.entity.carlton:14.name=Vauxhall Lotus Carlton (Red)
+item.spawn_egg.entity.carlton:15.name=Vauxhall Carlton Base (Black)
+item.spawn_egg.entity.carlton:16.name=Vauxhall Carlton GSi (Black)
+item.spawn_egg.entity.carlton:17.name=Vauxhall Lotus Carlton (Black)
+item.spawn_egg.entity.carlton:18.name=Vauxhall Carlton Retro (Blue)
+item.spawn_egg.entity.carlton:19.name=Vauxhall Carlton Retro (Green)
+item.spawn_egg.entity.carlton:20.name=Vauxhall Carlton Retro (Orange)
+item.spawn_egg.entity.carlton:21.name=Vauxhall Lotus Carlton (Green)
+item.spawn_egg.entity.carlton:22.name=Vauxhall Lotus Carlton (Blue)
+

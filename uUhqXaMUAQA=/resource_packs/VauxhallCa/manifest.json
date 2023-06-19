@@ -1,0 +1,17 @@
+{
+    "format_version": 1,
+    "header": {
+        "name": "Vauxhall Carlton (R)",
+        "description": "A Vauxhall Carlton. Made by @jettacar_",
+        "uuid": "4a82aff3-a1c5-46fd-8e3a-96baf2ae3a1a",
+        "version": [0, 0, 1]
+    },
+    "modules": [
+        {
+            "description": "A Vauxhall Carlton. Made by @jettacar_",
+            "type": "resources",
+            "uuid": "e8f431aa-77df-43f7-b6d7-761462998fe5",
+            "version": [0, 0, 1]
+        }
+    ]
+}

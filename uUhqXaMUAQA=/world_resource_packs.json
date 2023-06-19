@@ -1,0 +1,14 @@
+
+[
+	
+	{
+		"pack_id" : "4f3c134c-bf7f-49d3-abc3-28ffd6963768",
+		"version" : [ 1, 0, 5 ]
+	},
+	
+	{
+		"pack_id" : "34bf8081-cb63-4585-a893-6817d4e2b546",
+		"subpack" : "Creeper_shield",
+		"version" : [ 0, 0, 1 ]
+	}
+]
